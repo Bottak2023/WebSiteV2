@@ -541,7 +541,7 @@ export default function Home() {
       <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block right-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-20 lg:right-[20px]' onClick={next}>{'>'}</button>
 
 
-      <button className={`fixed text-[20px] text-gray-100 h-[50px] w-[200px]  rounded-full inline-block right-[0px]  left-[0px]  bottom-10 mx-auto ${act === false ? 'bg-[#c71a1a]' : 'bg-green-600' }z-20 `} onClick={getAllExchage}>{act == false ? 'Act. Auto Stop ' :'Act. Auto run '}</button>
+      <button className={`fixed text-[20px] text-gray-100 h-[50px] w-[200px]  rounded-full inline-block right-[0px]  left-[0px]  bottom-10 mx-auto ${act === false ? 'bg-[#c71a1a]' : 'bg-green-600' } z-20 `} onClick={getAllExchage}>{act == false ? 'Act. Auto Stop ' :'Act. Auto run '}</button>
 
 
 
