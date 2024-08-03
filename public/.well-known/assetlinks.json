@@ -1,0 +1,14 @@
+[
+    {
+      "relation": [
+        "delegate_permission/common.handle_all_urls"
+      ],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "lat.bottak.twa",
+        "sha256_cert_fingerprints": [
+          "67:CC:9E:EA:E0:F2:3F:2A:54:4F:49:C4:D3:A8:2D:91:D0:D6:3F:4B:F7:72:99:B7:0E:68:37:CD:C4:F9:37:08"
+        ]
+      }
+    }
+  ]

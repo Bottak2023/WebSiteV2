@@ -1,0 +1,759 @@
+'use client';
+import { useUser } from '@/context/Context'
+import { getSpecificData, writeUserData } from '@/firebase/database'
+import { useEffect, useState, useRef } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import Button from '@/components/Button'
+import Loader from '@/components/Loader'
+// import { getCurrencyExchange } from '@/currency';
+import Modal from '@/components/Modal'
+import Input from '@/components/Input'
+import SelectSimple from '@/components/SelectSimple'
+import { params } from '@/utils/paramsP2P'
+
+import { useRouter } from 'next/navigation';
+
+
+
+export default function Home() {
+
+  const { user, userDB, setUserProfile, modal, setModal, users, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, item, setItem, exchange, setExchange, } = useUser()
+  const router = useRouter()
+  const [filter, setFilter] = useState('')
+  const [state, setState] = useState({})
+  const [temporal, setTemporal] = useState(undefined)
+
+  const [fiat, setFiat] = useState('BOB')
+  const [trade, setTrade] = useState('BUY')
+  const [crypto, setCrypto] = useState('USDT')
+  const [resP2P, setResP2P] = useState(null)
+
+
+  const [act, setAct] = useState(false)
+
+
+  const refFirst = useRef(null);
+  const inputRef = useRef(null);
+  const inputRef2 = useRef(null);
+
+  function onChangeFilter(e) {
+    setFilter(e.target.value)
+  }
+
+
+  function sortArray(x, y) {
+    if (x['translation']['spa']['common'].toLowerCase() < y['translation']['spa']['common'].toLowerCase()) { return -1 }
+    if (x['translation']['spa']['common'].toLowerCase() > y['translation']['spa']['common'].toLowerCase()) { return 1 }
+    return 0
+  }
+  function onChangeHandler(e, i) {
+    setState({ ...state, [i.code]: { ...state[i.code], [e.target.name]: e.target.value } })
+  }
+  function manage(i) {
+    setItem(i)
+    setModal('Disable')
+  }
+  function save(i) {
+    setItem(i)
+    setModal('Save')
+  }
+  function disableConfirm() {
+    function callback() {
+      getSpecificData('divisas', setDivisas, () => { setModal('') })
+    }
+
+    setModal('Guardando...')
+    writeUserData(`divisas/${item.code}`, { habilitado: item.habilitado === undefined || item.habilitado === false ? true : false }, setUserSuccess, callback)
+    return
+  }
+  async function saveConfirm() {
+    function callback() {
+      getSpecificData('divisas', setDivisas, () => { setModal('') })
+    }
+
+    setModal('Guardando...')
+    await writeUserData(`divisas/${item.code}`, state[item.code], setUserSuccess, callback)
+    const obj = { ...state }
+    delete obj[item.code]
+    setState(obj)
+    return
+  }
+  function round(num) {
+    var m = Number((Math.abs(num) * 100).toPrecision(15));
+    return Math.round(m) / 100 * Math.sign(num);
+  }
+
+  const getCurrencyExchange = async (input, output) => {
+    const arr = Object.values(divisas).filter(i => i.habilitado !== undefined && i.habilitado === true && i.code !== 'USD').map(i => i.code)
+    if (arr.length === 0) {
+      return
+    }
+    const res = await fetch('/api/getExchange', {
+      method: 'POST',
+      body: JSON.stringify({ divisas: arr }),
+      headers: new Headers({
+        'Content-Type': 'application/json; charset=UTF-8'
+      })
+    })
+    const data = await res.json()
+    console.log(data)
+
+    setExchange(data)
+  }
+
+  const prev = () => {
+    requestAnimationFrame(() => {
+      const scrollLeft = refFirst.current.scrollLeft;
+      console.log(scrollLeft)
+      const itemWidth = screen.width - 50
+      refFirst.current.scrollLeft = scrollLeft - itemWidth;
+    });
+  };
+  const next = () => {
+    requestAnimationFrame(() => {
+      const scrollLeft = refFirst.current.scrollLeft;
+      console.log(scrollLeft)
+      const itemWidth = screen.width - 50
+      console.log(itemWidth)
+      refFirst.current.scrollLeft = scrollLeft + itemWidth;
+    });
+  };
+
+
+
+
+
+
+
+
+
+
+  function handlerClickSelect(name, i, setUpdate) {
+    if (name == 'fiat') {
+      setFiat(i)
+    }
+    if (name == 'trade') {
+      setTrade(i)
+    }
+    if (name == 'crypto') {
+      setCrypto(i)
+    }
+  }
+
+
+
+  // async function getChangeP2P(e) {
+  //   e.preventDefault()
+  //   const headers = {
+  //     "Accept": "*/*",
+  //     "Accept-Encoding": "gzip, deflate, br",
+  //     "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+  //     "Cache-Control": "no-cache",
+  //     "Connection": "keep-alive",
+  //     "Content-Length": "123",
+  //     "content-type": "application/json",
+  //     "Host": "p2p.binance.com",
+  //     "Origin": "https://p2p.binance.com",
+  //     "Pragma": "no-cache",
+  //     "TE": "Trailers",
+  //     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"
+  //   };
+
+  //   const data = {
+  //     asset: crypto,
+  //     tradeType: trade,
+  //     fiat,
+  //     transAmount: 0,
+  //     order: '',
+  //     page: 1,
+  //     rows: 10,
+  //     filterType: 'all'
+  //   };
+
+  //   const responseData = await fetch(
+  //     'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
+  //     {
+  //       headers,
+  //       method: 'POST',
+  //       body: JSON.stringify(data),
+
+  //     }
+  //   );
+
+  //   if (!responseData.ok)
+  //     throw 'bad response';
+  //   const jsonData = await responseData.json();
+  //   setResP2P(jsonData.data)
+  // }
+
+
+  // async function getChangeP2P(e) {
+  //   e.preventDefault()
+  //   const headers = {
+  //     "Accept": "*/*",
+  //     "Accept-Encoding": "gzip, deflate, br",
+  //     "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+  //     "Cache-Control": "no-cache",
+  //     "Connection": "keep-alive",
+  //     "Content-Length": "123",
+  //     "content-type": "application/json",
+  //     "Host": "p2p.binance.com",
+  //     "Origin": "https://p2p.binance.com",
+  //     "Pragma": "no-cache",
+  //     "TE": "Trailers",
+  //     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"
+  //   };
+
+  //   const data = {
+  //     asset: crypto,
+  //     tradeType: trade,
+  //     fiat,
+  //     transAmount: 0,
+  //     order: '',
+  //     page: 1,
+  //     rows: 10,
+  //     filterType: 'all'
+  //   };
+
+
+  //   const responseData = await fetch(
+  //     'https://cors-anywhere.herokuapp.com/https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
+  //     {
+  //       headers,
+  //       method: 'POST',
+  //       body: JSON.stringify(data),
+
+  //     }
+  //   );
+
+
+
+
+
+
+  //   // const responseData = await fetch(
+  //   //   'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
+  //   //   {
+  //   //     headers,
+  //   //     method: 'POST',
+  //   //     body: JSON.stringify(data),
+
+  //   //   }
+  //   // );
+
+  //   if (!responseData.ok)
+  //     throw 'bad response';
+  //   const jsonData = await responseData.json();
+  //   setResP2P(jsonData.data)
+  // }
+
+
+
+
+  async function getChangeP2P(e) {
+    e.preventDefault()
+
+    const data = {
+      asset: crypto,
+      tradeType: trade,
+      fiat,
+      transAmount: 0,
+      order: '',
+      page: 1,
+      rows: 10,
+      filterType: 'all'
+    };
+
+
+    let res = await fetch('/api/getP2P', {
+      headers: {
+        "Content-Length": "123",
+        "content-type": "application/json",
+      },
+      method: 'POST',
+      body: JSON.stringify({ ...data }),
+
+    })
+    let resDB = await res.json()
+    console.log()
+    setResP2P(resDB.data)
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  async function getExchage(i) {
+
+    const data = {
+      asset: 'USDT',
+      // tradeType: 'BUY',
+      fiat: i.code,
+      transAmount: state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : (i.transAmount ? i.transAmount : 0),
+      order: '',
+      page: 1,
+      rows: 5,
+      filterType: 'all'
+    };
+
+
+    let responseData = await fetch('/api/getP2Pbinance', {
+      headers: {
+        "Content-Length": "123",
+        "content-type": "application/json",
+      },
+      method: 'POST',
+      body: JSON.stringify({ ...data, tradeType: 'BUY', }),
+
+    })
+
+
+    let responseData2 = await fetch('/api/getP2Pbinance', {
+      headers: {
+        "Content-Length": "123",
+        "content-type": "application/json",
+      },
+      method: 'POST',
+      body: JSON.stringify({ ...data, tradeType: 'BUY', }),
+
+    })
+
+
+
+
+
+
+
+
+    const jsonData = await responseData.json();
+    const jsonData2 = await responseData2.json();
+
+    if (jsonData.data.length !== 0 && jsonData2.data.length !== 0) {
+      let tempMaxima = Math.max(...jsonData.data.map((i) => i.adv.price));
+      let tempMinima = Math.min(...jsonData.data.map((i) => i.adv.price));
+      let promedio = (tempMaxima + tempMinima) / 2;
+
+
+      let tempMaxima2 = Math.max(...jsonData2.data.map((i) => i.adv.price));
+      let tempMinima2 = Math.min(...jsonData2.data.map((i) => i.adv.price));
+      let promedio2 = (tempMaxima2 + tempMinima2) / 2;
+      setState({ ...state, [i.code]: { ...state[i.code], compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } })
+    } else {
+      setModal('NonExchange')
+      setItem({ ...i, transAmount: state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : 0, })
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  async function getAllExchage(i) {
+
+ setAct(!act)
+
+
+    await fetch('/api/getUsdtP2P')
+
+
+   
+
+
+
+
+  }
+
+
+  // async function getExchage(i) {
+  //   const headers = {
+  //     // "Accept": "*/*",
+  //     // "Accept-Encoding": "gzip, deflate, br",
+  //     // "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+  //     // "Cache-Control": "no-cache",
+  //     // "Connection": "keep-alive",
+  //     "Content-Length": "123",
+  //     "content-type": "application/json",
+  //     // "Host": "p2p.binance.com",
+  //     // "Origin": "https://p2p.binance.com",
+  //     // "Pragma": "no-cache",
+  //     // "TE": "Trailers",
+  //     // "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"
+  //   };
+
+  //   const data = {
+  //     asset: 'USDT',
+  //     // tradeType: 'BUY',
+  //     fiat: i.code,
+  //     transAmount: state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : (i.transAmount ? i.transAmount : 0),
+  //     order: '',
+  //     page: 1,
+  //     rows: 5,
+  //     filterType: 'all'
+  //   };
+
+  //   const responseData = await fetch(
+  //     'https://cors-anywhere.herokuapp.com/https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
+  //     {
+  //       headers,
+  //       method: 'POST',
+  //       body: JSON.stringify({ ...data, tradeType: 'BUY', }),
+
+  //     }
+  //   );
+  //   const responseData2 = await fetch(
+  //     'https://cors-anywhere.herokuapp.com/https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
+  //     {
+  //       headers,
+  //       method: 'POST',
+  //       body: JSON.stringify({ ...data, tradeType: 'SELL', }),
+
+  //     }
+  //   );
+  //   // if (!responseData.ok) throw 'bad response';
+  //   // if (!responseData.ok) throw 'bad response';
+
+  //   const jsonData = await responseData.json();
+  //   const jsonData2 = await responseData2.json();
+
+  //   if (jsonData.data.length !== 0 && jsonData2.data.length !== 0) {
+  //     let tempMaxima = Math.max(...jsonData.data.map((i) => i.adv.price));
+  //     let tempMinima = Math.min(...jsonData.data.map((i) => i.adv.price));
+  //     let promedio = (tempMaxima + tempMinima) / 2;
+
+
+  //     let tempMaxima2 = Math.max(...jsonData2.data.map((i) => i.adv.price));
+  //     let tempMinima2 = Math.min(...jsonData2.data.map((i) => i.adv.price));
+  //     let promedio2 = (tempMaxima2 + tempMinima2) / 2;
+  //     setState({ ...state, [i.code]: { ...state[i.code], compra: (promedio2 + 0.01).toFixed(2), venta: (promedio + 0.01).toFixed(2) } })
+  //   } else {
+  //     setModal('NonExchange')
+  //     setItem({ ...i, transAmount: state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : 0, })
+  //   }
+
+  // }
+
+  // async function getExchage(i) {
+  //   const headers = {
+  //     // "Accept": "*/*",
+  //     // "Accept-Encoding": "gzip, deflate, br",
+  //     // "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+  //     // "Cache-Control": "no-cache",
+  //     // "Connection": "keep-alive",
+  //     "Content-Length": "123",
+  //     "content-type": "application/json",
+  //     // "Host": "p2p.binance.com",
+  //     // "Origin": "https://p2p.binance.com",
+  //     // "Pragma": "no-cache",
+  //     // "TE": "Trailers",
+  //     // "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"
+  //   };
+
+  //   const data = {
+  //     asset: 'USDT',
+  //     // tradeType: 'BUY',
+  //     fiat: i.code,
+  //     transAmount: state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : (i.transAmount ? i.transAmount:  0),
+  //     order: '',
+  //     page: 2,
+  //     rows: 15,
+  //     filterType: 'all'
+  //   };
+
+  //   const responseData = await fetch(
+  //     'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
+  //     {
+  //       headers,
+  //       method: 'POST',
+  //       body: JSON.stringify({ ...data, tradeType: 'BUY', }),
+
+  //     }
+  //   );
+  //   const responseData2 = await fetch(
+  //     'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
+  //     {
+  //       headers,
+  //       method: 'POST',
+  //       body: JSON.stringify({ ...data, tradeType: 'SELL', }),
+
+  //     }
+  //   );
+  //   // if (!responseData.ok) throw 'bad response';
+  //   // if (!responseData.ok) throw 'bad response';
+
+  //   const jsonData = await responseData.json();
+  //   const jsonData2 = await responseData2.json();
+
+  //   if (jsonData.data.length !== 0 && jsonData2.data.length !== 0) {
+  //     let tempMaxima = Math.max(...jsonData.data.map((i) => i.adv.price));
+  //     let tempMinima = Math.min(...jsonData.data.map((i) => i.adv.price));
+  //     let promedio = (tempMaxima + tempMinima) / 2;
+
+
+  //     let tempMaxima2 = Math.max(...jsonData2.data.map((i) => i.adv.price));
+  //     let tempMinima2 = Math.min(...jsonData2.data.map((i) => i.adv.price));
+  //     let promedio2 = (tempMaxima2 + tempMinima2) / 2;
+  //     setState({ ...state, [i.code]: { ...state[i.code],  compra: (promedio2 + 0.01).toFixed(2), venta: (promedio + 0.01).toFixed(2) } })
+  //   } else {
+  //     setModal('NonExchange')
+  //     setItem({ ...i, transAmount: state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : 0, })
+  //   }
+
+  // }
+
+  console.log(state)
+
+
+
+
+  useEffect(() => {
+    divisas !== undefined && exchange === undefined && getCurrencyExchange()
+  }, [divisas]);
+
+  return (
+    <main className='h-full w-full'>
+      {modal === 'Guardando...' && <Loader> {modal} </Loader>}
+      {modal === 'Save' && <Modal funcion={saveConfirm}>Estas por modificar la tasa de cambio de:  {item['currency']}</Modal>}
+      {modal === 'NonExchange' && <Modal funcion={disableConfirm}>{item.code ? `La divisa ${item.code} no esta en la P2P de binance` : ''} {item.transAmount ? `o no se encontro cambio para el volumen ${item.transAmount}` : ''}</Modal>}
+      {modal === 'Disable' && <Modal funcion={disableConfirm}>Estas por {item.habilitado !== undefined && item.habilitado !== false ? 'DESABILITAR' : 'HABILITAR'} el siguiente item:  {item['currency']}</Modal>}
+      <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block left-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-20 lg:left-[20px]' onClick={prev}>{'<'}</button>
+      <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block right-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-20 lg:right-[20px]' onClick={next}>{'>'}</button>
+
+
+      <button className={`fixed text-[20px] text-gray-100 h-[50px] w-[200px]  rounded-full inline-block right-[0px]  left-[0px]  bottom-10 mx-auto ${act === false ? 'bg-[#c71a1a]' : 'bg-green-600' }z-20 `} onClick={getAllExchage}>{act == false ? 'Act. Auto Stop ' :'Act. Auto run '}</button>
+
+
+
+      <div className="w-full   relative h-full overflow-auto shadow-2xl p-5 bg-white min-h-[80vh] scroll-smooth" ref={refFirst}>
+
+
+
+
+        <form class="w-full ">
+          <div class="w-full flex flex-wrap md:flex-nowrap -mx-3 mb-6">
+            <div class="w-full md:w-[25%] px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                Exchage
+              </label>
+              <SelectSimple arr={params.exchange} name='trade' click={handlerClickSelect} defaultValue={trade} uuid='8768798' label='Fiat' required={true}></SelectSimple>
+              {/* <p class="text-red-500 text-xs italic">Please fill out this field.</p> */}
+            </div>
+            <div class="w-full md:w-[25%] px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                Crypto
+              </label>
+              <SelectSimple arr={params.crypto} name='crypto' click={handlerClickSelect} defaultValue={crypto} uuid='8768798' label='Crypto' required={true}></SelectSimple>
+            </div>
+            <div class="w-full md:w-[25%] px-3">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                Fiat
+              </label>
+              <SelectSimple arr={params.fiat} name='fiat' click={handlerClickSelect} defaultValue={fiat} uuid='8768798' label='Fiat' required={true}></SelectSimple>
+            </div>
+            <div class="w-full md:w-[25%] px-3 py-5 md:py-0 flex items-end">
+              <Button theme="Primary" click={getChangeP2P}>Get Change</Button>
+            </div>
+
+          </div>
+        </form>
+
+
+        {resP2P && <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" class="px-6 py-3">
+                  Advertisers
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Price
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Available/Order Limit
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+
+
+              {
+                resP2P.map((i) => {
+                  return <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      {i.advertiser.nickName}
+                    </th>
+                    <td class="px-6 py-4">
+                      {i.adv.price}
+                    </td>
+                    <td class="px-6 py-4">
+                      {i.adv.tradableQuantity} {crypto} <br />
+                      {i.adv.minSingleTransAmount} - {i.adv.maxSingleTransAmount}
+                    </td>
+                  </tr>
+                })
+              }
+            </tbody>
+          </table>
+        </div>}
+
+
+
+
+
+
+
+        <h3 className='font-medium text-[14px]'>Lista De Cambios</h3>
+        <br />
+        <input type="text" className='border-b-[1px] text-[14px] outline-none w-[400px]' onChange={onChangeFilter} placeholder='Buscar Divisa' />
+        <br />
+        <br />
+        <table className="w-full overflow-visible min-w-[1500px]  text-[14px] text-left text-gray-500 border-t-4 border-gray-400" style={{ minWidth: '1500px' }}>
+          {/* <table className="relative w-full overflow-scroll max-w-[800px] h-[50px]  text-[14px] text-left text-gray-500 border-t-4 border-gray-400"> */}
+          <thead className="text-[14px] text-gray-700 uppercase bg-white">
+            <tr>
+              <th scope="col" className=" px-3 py-3">
+                #
+              </th>
+              <th scope="col" className=" px-3 py-3">
+                Pais
+              </th>
+              <th scope="col" className=" px-3 py-3">
+                Code
+              </th>
+              <th scope="col" className=" px-3 py-3">
+                Tasa de <br /> cambio USD
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Compra
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Venta
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Volumen de exchange
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Aply Exchange USDT
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Tarifa de Envio<br />
+                1 - 1000 USD
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Tarifa de Envio <br />
+                1 001 - 10 000 USD
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Tarifa de Envio<br />
+                10 001 - 100 000 USD
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Guardar
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Habilitar
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {divisas && divisas !== undefined && Object.values(divisas).map((i, index) => {
+              return i.currency !== undefined && i.currency.toLowerCase().includes(filter.toLowerCase()) && <tr className={`text-[14px] border-b hover:bg-gray-100  ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-100'} `} key={index}>
+                <td className="px-3 py-4  flex text-gray-900 ">
+                  <span className='h-full flex py-2'>{index + 1}</span>
+                </td>
+                <td className="px-3 py-4 text-gray-900 ">
+                  {i['translation']['spa']['common']}
+                </td>
+                <td className="px-3 py-4 text-gray-900 ">
+                  {i.code}/{i.currency}
+                </td>
+                <td className="w-[150px] px-3 py-4 text-gray-900 ">
+                  1 USD = {exchange && exchange !== undefined && exchange[i.code] !== undefined && exchange[i.code]} {exchange && exchange !== undefined && exchange[i.code] !== undefined && `${i.code}`}
+                </td>
+                <td className="w-32 p-4">
+                  {/* <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['compra'] !== undefined ? i['compra'] : 0} /> */}
+                  <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].compra ? state[i.code].compra : (i['compra'] !== undefined ? i['compra'] : '')} />
+                </td>
+                <td className="w-32 p-4">
+                  <input type="number" name="venta" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].venta ? state[i.code].venta : (i['venta'] !== undefined ? i['venta'] : '')} />
+                </td>
+
+                <td className="w-32 p-4">
+                  <input type="number" name="transAmount" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : (i['transAmount'] !== undefined ? i['transAmount'] : '')} />
+                </td>
+
+                <td className="w-32 p-4">
+                  <Button theme={"Success"} click={() => getExchage(i)}>Get & Apply</Button>
+                </td>
+
+                <td className="w-32 p-4">
+                  <input type="number" name="tarifa 1" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['tarifa 1'] !== undefined ? i['tarifa 1'] : 0} />
+                </td>
+                <td className="w-32 p-4">
+                  <input type="number" name="tarifa 2" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['tarifa 2'] !== undefined ? i['tarifa 2'] : 0} />
+                </td>
+                <td className="w-32 p-4">
+                  <input type="number" name="tarifa 3" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['tarifa 3'] !== undefined ? i['tarifa 3'] : 0} />
+                </td>
+                <td className="px-3 py-4">
+                  {state && state[i.code] !== undefined
+                    ? <Button theme={"Success"} click={() => save(i)}>Guardar</Button>
+                    : <Button theme={"Disable"} >Disable</Button>
+                  }
+                </td>
+                <td className="px-3 py-4">
+                  {i.habilitado !== undefined && i.habilitado !== false
+                    ? <Button theme={"Success"} click={() => manage(i, 'Desabilitar')}>Habilitado</Button>
+                    : <Button theme={"Danger"} click={() => manage(i, 'Habilitar')}>Desabilitado</Button>
+                  }
+                </td>
+              </tr>
+            })
+            }
+          </tbody>
+        </table>
+      </div>
+    </main>
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
