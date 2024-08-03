@@ -119,7 +119,7 @@ function Home() {
                                         Importe mas comision:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                        {transactionDB.importe && transactionDB.importe + transactionDB.comision} {transactionDB['divisa de envio'] && transactionDB['divisa de envio']}
+                                        {transactionDB.importe && transactionDB.importe} {transactionDB['divisa de envio'] && transactionDB['divisa de envio']}
                                     </td>
                                 </tr>
                                 <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >
