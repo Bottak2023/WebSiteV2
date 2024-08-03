@@ -29,9 +29,9 @@ export default function App({ placeholder, value, onChange, propHandlerSelect, p
   const handlerOnChange = (e) => {
     onChange == 'Transference' && setTransferencia(e.target.value * 1);
 
-    (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 1000 && setComision(divisas[select]['tarifa 1'] * 1);
-    (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 10000 && (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 1000 && setComision(divisas[select]['tarifa 2'] * 1);
-    (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 100000 && (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 10000 && setComision(divisas[select]['tarifa 3'] * 1);
+    (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 1000 && setComision(divisas[select]['tarifa 1'] * e.target.value /100 );
+    (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 10000 && (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 1000 && setComision(divisas[select]['tarifa 2']  * e.target.value /100 );
+    (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 100000 && (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 10000 && setComision(divisas[select]['tarifa 3']  * e.target.value /100 );
     (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 100000 && setComision('CONTACTESE CON SOPORTE');
 
   }
