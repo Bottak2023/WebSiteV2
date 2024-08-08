@@ -373,16 +373,7 @@ export default function Home() {
   async function getAllExchage(i) {
 
  setAct(!act)
-
-
     await fetch('/api/getUsdtP2P')
-
-
-   
-
-
-
-
   }
 
 

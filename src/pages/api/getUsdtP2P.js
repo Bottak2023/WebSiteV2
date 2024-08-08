@@ -79,34 +79,39 @@ export default async function account(req, res) {
     var referene = database.ref('/divisas');
 
 
+    function getFirebaseDB() {
+        referene.once('value', function (snapshot) {
+            let data = snapshot.val()
+            let res = Object.values(data).filter(i => i.habilitado && i.habilitado != undefined && i.habilitado === true)
+            // console.log(res)
 
-    referene.once('value', function (snapshot) {
-        let data = snapshot.val()
-        let res = Object.values(data).filter(i => i.habilitado && i.habilitado != undefined && i.habilitado === true)
-        // console.log(res)
+            res.map(i => {
+                const data = {
+                    asset: 'USDT',
+                    fiat: i.code,
+                    transAmount: i.transAmount && i.transAmount !== undefined ? i.transAmount : 0,
+                    order: '',
+                    page: 1,
+                    rows: 5,
+                    filterType: 'all'
+                };
+                getExchange(data)
+            })
+        });
 
-        res.map(i => {
-            const data = {
-                asset: 'USDT',
-                fiat: i.code,
-                transAmount: i.transAmount && i.transAmount !== undefined ? i.transAmount : 0,
-                order: '',
-                page: 1,
-                rows: 5,
-                filterType: 'all'
-            };
-            getExchange(data)
-        })
-    });
-
-
-
-
+    }
 
 
 
 
 
+
+
+
+    setInterval(() => {
+        console.log('hello')
+        getFirebaseDB()
+    }, 60000)
 
 
 
