@@ -28,6 +28,7 @@ export default function Home() {
   const [trade, setTrade] = useState('BUY')
   const [crypto, setCrypto] = useState('USDT')
   const [resP2P, setResP2P] = useState(null)
+  const [habilitados, setHabilitados] = useState(true)
 
 
   const [act, setAct] = useState(false)
@@ -286,7 +287,7 @@ export default function Home() {
 
 
 
-  
+
 
 
   async function getExchage(i) {
@@ -527,10 +528,10 @@ export default function Home() {
 
   useEffect(() => {
     let dateDB = new Date();
-        let options = { timeZone: 'America/La_Paz' };
-        let date =  new Date(dateDB.toLocaleString('en-US', options))
-      
-        setTime_stamp(date.getTime())
+    let options = { timeZone: 'America/La_Paz' };
+    let date = new Date(dateDB.toLocaleString('en-US', options))
+
+    setTime_stamp(date.getTime())
   }, []);
 
   return (
@@ -626,7 +627,15 @@ export default function Home() {
 
         <h3 className='font-medium text-[14px]'>Lista De Cambios</h3>
         <br />
-        <input type="text" className='border-b-[1px] text-[14px] outline-none w-[400px]' onChange={onChangeFilter} placeholder='Buscar Divisa' />
+        <div className=' space-y-5 lg:space-y-0 lg:grid grid-cols-2 gap-2'>
+          <input type="text" className='border-b-[1px] text-[14px] outline-none w-[400px] text-black' onChange={onChangeFilter} placeholder='Buscar Divisa' />
+          {habilitados
+            ? <Button theme={"Success"} click={() => setHabilitados('')}>Habilitados</Button>
+            : <Button theme={"Disable"} click={() => setHabilitados(true)}>Habilitados</Button>
+          }
+        </div>
+
+
         <br />
         <br />
         <table className="w-full overflow-visible min-w-[1500px]  text-[14px] text-left text-gray-500 border-t-4 border-gray-400" style={{ minWidth: '1500px' }}>
@@ -681,8 +690,8 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {divisas && divisas !== undefined && time_stamp !== undefined&& Object.values(divisas).map((i, index) => {
-              return i.currency !== undefined && i.currency.toLowerCase().includes(filter.toLowerCase()) && <tr className={`text-[14px] border-b hover:bg-gray-100  ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-100'} `} key={index}>
+            {divisas && divisas !== undefined && time_stamp !== undefined && Object.values(divisas).map((i, index) => {
+              return i.currency !== undefined && i.currency.toLowerCase().includes(filter.toLowerCase()) && (i.habilitado !== undefined && habilitados && i.habilitado.toString() !== undefined ? i.habilitado.toString().includes(habilitados) : habilitados ? false : true) && <tr className={`text-[14px] border-b hover:bg-gray-100  ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-100'} `} key={index}>
                 <td className="px-3 py-4  flex text-gray-900 ">
                   <span className='h-full flex py-2'>{index + 1}</span>
                 </td>
@@ -702,9 +711,9 @@ export default function Home() {
                 <td className="w-32 p-4">
                   <input type="number" name="venta" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].venta ? state[i.code].venta : (i['venta'] !== undefined ? i['venta'] : '')} />
                 </td>
-                <td className={`px-3 py-4 text-gray-900 ${((time_stamp - i.time_stamp) /60000 )> 60 && 'bg-red-00'} ${((time_stamp - i.time_stamp) /60000 )< 10 && 'bg-green-200'} ${((time_stamp - i.time_stamp) /60000 )> 10 &&((time_stamp - i.time_stamp) /60000 )< 60 && 'bg-yellow-200'}`}>
-                 {console.log(((time_stamp - i.time_stamp) /60000 )> 10 &&((time_stamp - i.time_stamp) /60000 )< 60)}
-                  {i.actualizacion && i.actualizacion !== undefined ?<>{i.actualizacion.split(' ')[0]} <br /> {i.actualizacion.split(' ')[1]}</>: ''}
+                <td className={`px-3 py-4 text-gray-900 ${((time_stamp - i.time_stamp) / 60000) > 60 && 'bg-red-200'} ${((time_stamp - i.time_stamp) / 60000) < 10 && 'bg-green-200'} ${((time_stamp - i.time_stamp) / 60000) > 10 && ((time_stamp - i.time_stamp) / 60000) < 60 && 'bg-yellow-200'}`}>
+                  {console.log(((time_stamp - i.time_stamp) / 60000) > 10 && ((time_stamp - i.time_stamp) / 60000) < 60)}
+                  {i.actualizacion && i.actualizacion !== undefined ? <>{i.actualizacion.split(' ')[0]} <br /> {i.actualizacion.split(' ')[1]}</> : ''}
                 </td>
                 <td className="w-32 p-4">
                   <input type="number" name="transAmount" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : (i['transAmount'] !== undefined ? i['transAmount'] : '')} />
@@ -738,9 +747,9 @@ export default function Home() {
               </tr>
             })
             }
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
     </main >
   )
 }
