@@ -17,13 +17,13 @@ const db = getDatabase(admin.apps[0]);
 
 
 
-function getDayMonthYear (time_stamp) {
+function getDayMonthYear(time_stamp) {
 
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
     const date = time_stamp ? new Date(time_stamp) : new Date();
-    
-    return `${date.getHours() > 9  ? date.getHours() : '0' + date.getHours()}:${date.getMinutes() > 9 ? date.getMinutes():'0' + date.getMinutes()} ${date.getDate().toString().length === 1 ? '0' + date.getDate().toString() : date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`
+
+    return `${date.getHours() > 9 ? date.getHours() : '0' + date.getHours()}:${date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()} ${date.getDate().toString().length === 1 ? '0' + date.getDate().toString() : date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`
 }
 
 
@@ -45,7 +45,7 @@ export default async function account(req, res) {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"
     };
 
-    async function getExchange(data) {
+    async function getExchange(data, pila) {
         const responseData = await fetch(
             'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
             {
@@ -79,12 +79,16 @@ export default async function account(req, res) {
             let promedio2 = (tempMaxima2 + tempMinima2) / 2;
 
             const ref = db.ref(`divisas/${data.fiat}`);
-            await ref.update({ compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2), actualizacion: getDayMonthYear(new Date())})
+            await ref.update({ compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2), actualizacion: getDayMonthYear(new Date()) })
 
             // console.log({ [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } })
-            acc = { [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } }
+            acc = { ...acc, [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } }
 
         }
+
+        return pila === true && res.json({ data: acc })
+
+
     }
 
 
@@ -97,9 +101,9 @@ export default async function account(req, res) {
         referene.once('value', async function (snapshot) {
             let data = snapshot.val()
             let resData = Object.values(data).filter(i => i.habilitado && i.habilitado != undefined && i.habilitado === true)
-            // console.log(res)
+            console.log(resData)
 
-            resData.map(i => {
+            resData.map((i, index) => {
                 const data = {
                     asset: 'USDT',
                     fiat: i.code,
@@ -109,13 +113,16 @@ export default async function account(req, res) {
                     rows: 5,
                     filterType: 'all'
                 };
-                getExchange(data)
+                // console.log(index * 1 + 1)
+                // console.log(resData.length * 1)
+                // console.log(index * 1 + 1 == resData.length * 1)
+                getExchange(data, index * 1 + 1 == resData.length * 1)
             })
 
 
         });
 
-        return res.json({ data: 'exitoso' })
+
 
     }
     getFirebaseDB()
