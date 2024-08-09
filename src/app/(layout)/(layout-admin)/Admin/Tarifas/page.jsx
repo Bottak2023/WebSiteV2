@@ -11,7 +11,7 @@ import Modal from '@/components/Modal'
 import Input from '@/components/Input'
 import SelectSimple from '@/components/SelectSimple'
 import { params } from '@/utils/paramsP2P'
-
+import GetP2Pinterval from '@/components/GetP2Pinterval'
 import { useRouter } from 'next/navigation';
 
 
@@ -364,17 +364,27 @@ export default function Home() {
 
 
 
+  let interval
 
+  function handlerInterval() {
+    if (!act) {
+      interval = setInterval(() => {
+        console.log('hello')
+        console.log(act)
+      }, 2000)
+    } else {
+      clearInterval(interval)
+    }
 
-
-
-
-
-  async function getAllExchage(i) {
-
- setAct(!act)
-    await fetch('/api/getUsdtP2P')
   }
+
+
+
+  // async function getAllExchage(i) {
+
+
+  //   await fetch('/api/getUsdtP2P')
+  // }
 
 
   // async function getExchage(i) {
@@ -513,14 +523,15 @@ export default function Home() {
 
   // }
 
-  console.log(state)
+  console.log(divisas)
 
 
 
 
-  useEffect(() => {
-    divisas !== undefined && exchange === undefined && getCurrencyExchange()
-  }, [divisas]);
+  // useEffect(() => {
+  //   divisas !== undefined && exchange === undefined && getCurrencyExchange()
+  //   console.log('useState')
+  // }, [divisas]);
 
   return (
     <main className='h-full w-full'>
@@ -531,8 +542,8 @@ export default function Home() {
       <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block left-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-20 lg:left-[20px]' onClick={prev}>{'<'}</button>
       <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block right-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-20 lg:right-[20px]' onClick={next}>{'>'}</button>
 
-
-      <button className={`fixed text-[20px] text-gray-100 h-[50px] w-[200px]  rounded-full inline-block right-[0px]  left-[0px]  bottom-10 mx-auto ${act === false ? 'bg-[#c71a1a]' : 'bg-green-600' } z-20 `} onClick={getAllExchage}>{act == false ? 'Act. Auto Stop ' :'Act. Auto run '}</button>
+      <GetP2Pinterval></GetP2Pinterval>
+      <button className={`fixed text-[20px] text-gray-100 h-[50px] w-[200px]  rounded-full inline-block right-[0px]  left-[0px]  bottom-10 mx-auto ${act === false ? 'bg-[#c71a1a]' : 'bg-green-600'} z-20 `} onClick={handlerInterval}>{act == false ? 'Act. Auto Stop ' : 'Act. Auto run '}</button>
 
 
 
@@ -680,7 +691,7 @@ export default function Home() {
                   {i.code}/{i.currency}
                 </td>
                 <td className="w-[150px] px-3 py-4 text-gray-900 ">
-                  1 USD = {exchange && exchange !== undefined && exchange[i.code] !== undefined && exchange[i.code]} {exchange && exchange !== undefined && exchange[i.code] !== undefined && `${i.code}`}
+                  1 USD  {exchange && exchange !== undefined && exchange[i.code] !== undefined && exchange[i.code]} {exchange && exchange !== undefined && exchange[i.code] !== undefined && `${i.code}`}
                 </td>
                 <td className="w-32 p-4">
                   {/* <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['compra'] !== undefined ? i['compra'] : 0} /> */}

@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 import admin from 'firebase-admin'
 import { getDatabase, onValue, set, child, get, remove, update, query, orderByChild, equalTo } from "firebase-admin/database";
-// import { app } from './config'
 
 var serviceAccount = require("./firebase-adminsdk.json");
 
@@ -14,10 +13,23 @@ if (!admin.apps.length) {
     });
 }
 const db = getDatabase(admin.apps[0]);
-// const ref = db.ref('/div');
+
+
+
+
+function getDayMonthYear (time_stamp) {
+
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+    const date = time_stamp ? new Date(time_stamp) : new Date();
+    
+    return `${date.getHours() > 9  ? date.getHours() : '0' + date.getHours()}:${date.getMinutes() > 9 ? date.getMinutes():'0' + date.getMinutes()} ${date.getDate().toString().length === 1 ? '0' + date.getDate().toString() : date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`
+}
+
+
 
 export default async function account(req, res) {
-
+    let acc = {}
     const headers = {
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate, br",
@@ -67,11 +79,12 @@ export default async function account(req, res) {
             let promedio2 = (tempMaxima2 + tempMinima2) / 2;
 
             const ref = db.ref(`divisas/${data.fiat}`);
-            ref.update({ compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) });
-            console.log({ [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } })
-        }
+            await ref.update({ compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2), actualizacion: getDayMonthYear(new Date())})
 
-        //  console.log(jsonData)
+            // console.log({ [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } })
+            acc = { [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } }
+
+        }
     }
 
 
@@ -80,12 +93,13 @@ export default async function account(req, res) {
 
 
     function getFirebaseDB() {
-        referene.once('value', function (snapshot) {
+        let db
+        referene.once('value', async function (snapshot) {
             let data = snapshot.val()
-            let res = Object.values(data).filter(i => i.habilitado && i.habilitado != undefined && i.habilitado === true)
+            let resData = Object.values(data).filter(i => i.habilitado && i.habilitado != undefined && i.habilitado === true)
             // console.log(res)
 
-            res.map(i => {
+            resData.map(i => {
                 const data = {
                     asset: 'USDT',
                     fiat: i.code,
@@ -97,9 +111,14 @@ export default async function account(req, res) {
                 };
                 getExchange(data)
             })
+
+
         });
 
+        return res.json({ data: 'exitoso' })
+
     }
+    getFirebaseDB()
 
 
 
@@ -108,19 +127,10 @@ export default async function account(req, res) {
 
 
 
-    setInterval(() => {
-        console.log('hello')
-        getFirebaseDB()
-    }, 60000)
 
 
 
 
-
-
-
-
-    console.log('-------------')
 
 }
 

@@ -16,21 +16,52 @@ function getData(setUserData) {
 
 async function getSpecificData(query, setUserSpecificData, callback) {
   try {
-    const snapshot = await get(child(dbRef, `${query}`))
-    console.log(query, snapshot.exists())
-    if (snapshot.exists()) {
-      setUserSpecificData(snapshot.val())
-      callback && callback !== undefined ? callback() : ''
-      return snapshot.val()
-    } else {
-      callback && callback !== undefined ? callback() : ''
-      setUserSpecificData(null)
-      return null
-    }
+
+    onValue(ref(db, query), (snapshot) => {
+      if (snapshot.exists()) {
+        setUserSpecificData(snapshot.val())
+        callback && callback !== undefined ? callback() : ''
+        return snapshot.val()
+      }else{
+        callback && callback !== undefined ? callback() : ''
+        setUserSpecificData(null)
+        return null
+      }
+    });
+
+    // const snapshot = await get(child(dbRef, `${query}`))
+    // console.log(query, snapshot.exists())
+    // if (snapshot.exists()) {
+    //   setUserSpecificData(snapshot.val())
+    //   callback && callback !== undefined ? callback() : ''
+    //   return snapshot.val()
+    // } else {
+    //   callback && callback !== undefined ? callback() : ''
+    //   setUserSpecificData(null)
+    //   return null
+    // }
   } catch (error) {
     console.error(error);
   }
 }
+
+// async function getSpecificData(query, setUserSpecificData, callback) {
+//   try {
+//     const snapshot = await get(child(dbRef, `${query}`))
+//     console.log(query, snapshot.exists())
+//     if (snapshot.exists()) {
+//       setUserSpecificData(snapshot.val())
+//       callback && callback !== undefined ? callback() : ''
+//       return snapshot.val()
+//     } else {
+//       callback && callback !== undefined ? callback() : ''
+//       setUserSpecificData(null)
+//       return null
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
 function getSpecificDataEq(route, children, eq, setUserData, callback) {
   get(query(ref(db, route), orderByChild(children), equalTo(eq)))
