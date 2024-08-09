@@ -10,6 +10,7 @@ export function UserProvider({ children }) {
 	const [users, setUsers] = useState(undefined)
 	const [userDB, setUserDB] = useState(undefined)
 
+	const [time_stamp, setTime_stamp] = useState(undefined)
 	const [divisas, setDivisas] = useState(undefined)
 	const [envios, setEnvios] = useState(undefined)
 	const [exchange, setExchange] = useState(undefined)
@@ -99,6 +100,7 @@ export function UserProvider({ children }) {
 			webcamRef1, item, setItem,
 			webcamRef2,
 			webcamRef3,
+			time_stamp, setTime_stamp,
 			notificaciones, setNotificaciones,
 			navItem, setNavItem,
 			transactionDB, setTransactionDB,
@@ -146,7 +148,7 @@ export function UserProvider({ children }) {
 		filter,
 		filterQR, exchange, countries, destinatarios, transactionDB, navItem, comision,
 		enviosDB,
-		cambiosDB,
+		cambiosDB,time_stamp,
 		notificaciones])
 
 

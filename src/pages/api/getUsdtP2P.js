@@ -17,13 +17,18 @@ const db = getDatabase(admin.apps[0]);
 
 
 
-function getDayMonthYear(time_stamp) {
+function getDayMonthYear() {
 
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
-    const date = time_stamp ? new Date(time_stamp) : new Date();
+    let dateDB = new Date();
+    let options = { timeZone: 'America/La_Paz' };
+    let date =  new Date(dateDB.toLocaleString('en-US', options))
 
-    return `${date.getHours() > 9 ? date.getHours() : '0' + date.getHours()}:${date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()} ${date.getDate().toString().length === 1 ? '0' + date.getDate().toString() : date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`
+    return {
+        actualizacion: `${date.getHours() > 9 ? date.getHours() : '0' + date.getHours()}:${date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()} ${date.getDate().toString().length === 1 ? '0' + date.getDate().toString() : date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`,
+        time_stamp: date.getTime()
+}
 }
 
 
@@ -79,7 +84,7 @@ export default async function account(req, res) {
             let promedio2 = (tempMaxima2 + tempMinima2) / 2;
 
             const ref = db.ref(`divisas/${data.fiat}`);
-            await ref.update({ compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2), actualizacion: getDayMonthYear(new Date()) })
+            await ref.update({ compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2),  ...getDayMonthYear() })
 
             // console.log({ [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } })
             acc = { ...acc, [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } }
@@ -101,7 +106,7 @@ export default async function account(req, res) {
         referene.once('value', async function (snapshot) {
             let data = snapshot.val()
             let resData = Object.values(data).filter(i => i.habilitado && i.habilitado != undefined && i.habilitado === true)
-            console.log(resData)
+            // console.log(resData)
 
             resData.map((i, index) => {
                 const data = {

@@ -1,40 +1,10 @@
 'use client'
 
+import { useUser } from '@/context/Context'
 
 
 
 import React, { useState, useEffect } from "react";
-const Timer = () => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    //Implementing the setInterval method
-    const interval = setInterval(() => {
-      setCount(count + 1);
-    }, 1000);
-
-    //Clearing the interval
-    return () => clearInterval(interval);
-  }, [count]);
-
-  return (
-    <div
-      style={{
-        display: "flexbox",
-        margin: "auto",
-        textAlign: "center",
-      }}
-    >
-      <h1 style={{ color: "green" }}>
-        GeeksforGeeks
-      </h1>
-      <h3>
-        React Example for using setInterval method
-      </h3>
-      <h1>{count}</h1>
-    </div>
-  );
-};
 
 
 // import "./StopWatch.css";
@@ -71,12 +41,78 @@ function StopWatch() {
   const [isPaused, setIsPaused] = useState(true);
   const [time, setTime] = useState(0);
 
+  const [count, setCount] = useState(0);
+
+
+
+
+
+
+
+
+    const {setTime_stamp, user, userDB, setUserProfile, modal, setModal, users, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, item, setItem, exchange, setExchange, } = useUser()
+
+
+
+
+
+
+
+  const Timer = () => {
+
+    useEffect(() => {
+      //Implementing the setInterval method
+      const interval = setInterval(() => {
+        setCount(count + 1);
+
+
+       
+      }, 1000);
+
+      //Clearing the interval
+      return () => clearInterval(interval);
+    }, [count]);
+
+    return (
+      <div
+        style={{
+          display: "flexbox",
+          margin: "auto",
+          textAlign: "center",
+        }}
+      >
+        <h1 className="text-green-500">
+          Cronometro de Actualizacion 
+        </h1>
+        {/* <h3>
+          React Example for using setInterval method
+        </h3> */}
+        <h1 className="text-green-500">{count}</h1>
+      </div>
+    );
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   async function getAllExchage(i) {
     try {
       const responseData = await fetch('/api/getUsdtP2P')
       const jsonData = await responseData.json();
       console.log(jsonData)
+      setCount(0)
     } catch (error) {
       console.error(error);
     }
@@ -89,12 +125,22 @@ function StopWatch() {
     if (isActive && isPaused === false) {
       interval = setInterval(() => {
 
-        setTime(time * 1 + 10000);
+
+
+        let dateDB = new Date();
+        let options = { timeZone: 'America/La_Paz' };
+        let date =  new Date(dateDB.toLocaleString('en-US', options))
+      
+        setTime_stamp(date.getTime())
+
+
+
+        setTime(time * 1 + 60000);
         getAllExchage()
 
 
 
-      }, 10000);
+      }, 60000);
     } else {
       clearInterval(interval);
     }
@@ -118,8 +164,8 @@ function StopWatch() {
   };
 
   return (
-    <div className="stop-watch">
-      {    isActive && <Timer time={time} />}
+    <div className="w-full flex fixed top-[70px] left-0 px-5 pb-3 z-40 bg-black">
+      {isActive && <Timer time={time} />}
       <ControlButtons
         active={isActive}
         isPaused={isPaused}

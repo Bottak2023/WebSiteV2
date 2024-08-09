@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
-  const { user, userDB, setUserProfile, modal, setModal, users, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, item, setItem, exchange, setExchange, } = useUser()
+  const { user, userDB, setTime_stamp, time_stamp, setUserProfile, modal, setModal, users, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, item, setItem, exchange, setExchange, } = useUser()
   const router = useRouter()
   const [filter, setFilter] = useState('')
   const [state, setState] = useState({})
@@ -286,9 +286,7 @@ export default function Home() {
 
 
 
-
-
-
+  
 
 
   async function getExchage(i) {
@@ -523,18 +521,20 @@ export default function Home() {
 
   // }
 
-  console.log(divisas)
 
 
 
 
-  // useEffect(() => {
-  //   divisas !== undefined && exchange === undefined && getCurrencyExchange()
-  //   console.log('useState')
-  // }, [divisas]);
+  useEffect(() => {
+    let dateDB = new Date();
+        let options = { timeZone: 'America/La_Paz' };
+        let date =  new Date(dateDB.toLocaleString('en-US', options))
+      
+        setTime_stamp(date.getTime())
+  }, []);
 
   return (
-    <main className='h-full w-full'>
+    <main className='h-full w-full pt-[70px]'>
       {modal === 'Guardando...' && <Loader> {modal} </Loader>}
       {modal === 'Save' && <Modal funcion={saveConfirm}>Estas por modificar la tasa de cambio de:  {item['currency']}</Modal>}
       {modal === 'NonExchange' && <Modal funcion={disableConfirm}>{item.code ? `La divisa ${item.code} no esta en la P2P de binance` : ''} {item.transAmount ? `o no se encontro cambio para el volumen ${item.transAmount}` : ''}</Modal>}
@@ -543,7 +543,6 @@ export default function Home() {
       <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block right-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-20 lg:right-[20px]' onClick={next}>{'>'}</button>
 
       <GetP2Pinterval></GetP2Pinterval>
-      <button className={`fixed text-[20px] text-gray-100 h-[50px] w-[200px]  rounded-full inline-block right-[0px]  left-[0px]  bottom-10 mx-auto ${act === false ? 'bg-[#c71a1a]' : 'bg-green-600'} z-20 `} onClick={handlerInterval}>{act == false ? 'Act. Auto Stop ' : 'Act. Auto run '}</button>
 
 
 
@@ -653,6 +652,9 @@ export default function Home() {
                 Venta
               </th>
               <th scope="col" className="text-center px-3 py-3">
+                Ultima Actualizacion
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
                 Volumen de exchange
               </th>
               <th scope="col" className="text-center px-3 py-3">
@@ -679,7 +681,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {divisas && divisas !== undefined && Object.values(divisas).map((i, index) => {
+            {divisas && divisas !== undefined && time_stamp !== undefined&& Object.values(divisas).map((i, index) => {
               return i.currency !== undefined && i.currency.toLowerCase().includes(filter.toLowerCase()) && <tr className={`text-[14px] border-b hover:bg-gray-100  ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-100'} `} key={index}>
                 <td className="px-3 py-4  flex text-gray-900 ">
                   <span className='h-full flex py-2'>{index + 1}</span>
@@ -700,7 +702,10 @@ export default function Home() {
                 <td className="w-32 p-4">
                   <input type="number" name="venta" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].venta ? state[i.code].venta : (i['venta'] !== undefined ? i['venta'] : '')} />
                 </td>
-
+                <td className={`px-3 py-4 text-gray-900 ${((time_stamp - i.time_stamp) /60000 )> 60 && 'bg-red-00'} ${((time_stamp - i.time_stamp) /60000 )< 10 && 'bg-green-200'} ${((time_stamp - i.time_stamp) /60000 )> 10 &&((time_stamp - i.time_stamp) /60000 )< 60 && 'bg-yellow-200'}`}>
+                 {console.log(((time_stamp - i.time_stamp) /60000 )> 10 &&((time_stamp - i.time_stamp) /60000 )< 60)}
+                  {i.actualizacion && i.actualizacion !== undefined ?<>{i.actualizacion.split(' ')[0]} <br /> {i.actualizacion.split(' ')[1]}</>: ''}
+                </td>
                 <td className="w-32 p-4">
                   <input type="number" name="transAmount" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : (i['transAmount'] !== undefined ? i['transAmount'] : '')} />
                 </td>
@@ -733,10 +738,10 @@ export default function Home() {
               </tr>
             })
             }
-          </tbody>
-        </table>
-      </div>
-    </main>
+        </tbody>
+      </table>
+    </div>
+    </main >
   )
 }
 
