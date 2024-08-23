@@ -130,7 +130,7 @@ export default function Home() {
                                 Pais/Comunidad
                             </th>
                             <th scope="col" className=" px-3 py-3">
-                                Tasa de <br /> cambio USD
+                                Tasa de <br /> cambio USDT
 
                             </th>
 
@@ -143,15 +143,15 @@ export default function Home() {
 
                             <th scope="col" className="text-center px-3 py-3">
                                 Tarifa de Envio<br />
-                                1 - 1000 USD
+                                1 - 1000 USDT
                             </th>
                             <th scope="col" className="text-center px-3 py-3">
                                 Tarifa de Envio <br />
-                                10 000 - 100 000 USD
+                                10 000 - 100 000 USDT
                             </th>
                             <th scope="col" className="text-center px-3 py-3">
                                 Tarifa de Envio<br />
-                                100 000 - ... USD
+                                100 000 - ... USDT
                             </th>
                             <th scope="col" className="text-center px-3 py-3">
                                 Guardar
@@ -174,7 +174,7 @@ export default function Home() {
                                     {i['translation']['spa']['common']}
                                 </td>
                                 <td className="w-[150px] px-3 py-4 text-gray-900 ">
-                                    1 USD = {exchange && exchange !== undefined && exchange[i.code] !== undefined && exchange[i.code]} {exchange && exchange !== undefined && exchange[i.code] !== undefined && `${i.code}`}
+                                    1 USDT = {exchange && exchange !== undefined && exchange[i.code] !== undefined && exchange[i.code]} {exchange && exchange !== undefined && exchange[i.code] !== undefined && `${i.code}`}
                                 </td>
                                 <td className="w-32 p-4">
                                     <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['compra'] !== undefined ? i['compra'] : 0} />

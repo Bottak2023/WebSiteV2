@@ -45,6 +45,43 @@ async function getSpecificData(query, setUserSpecificData, callback) {
   }
 }
 
+
+
+
+async function getSpecificData2(query, setUserSpecificData, callback, ) {
+  try {
+
+    onValue(ref(db, query), (snapshot) => {
+      if (snapshot.exists()) {
+        setUserSpecificData(snapshot.val())
+        callback && callback !== undefined ? callback() : ''
+        return snapshot.val()
+      }else{
+        callback && callback !== undefined ? callback() : ''
+        setUserSpecificData(null)
+        return null
+      }
+    });
+
+    // const snapshot = await get(child(dbRef, `${query}`))
+    // console.log(query, snapshot.exists())
+    // if (snapshot.exists()) {
+    //   setUserSpecificData(snapshot.val())
+    //   callback && callback !== undefined ? callback() : ''
+    //   return snapshot.val()
+    // } else {
+    //   callback && callback !== undefined ? callback() : ''
+    //   setUserSpecificData(null)
+    //   return null
+    // }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+
+
 // async function getSpecificData(query, setUserSpecificData, callback) {
 //   try {
 //     const snapshot = await get(child(dbRef, `${query}`))
@@ -75,6 +112,42 @@ function getSpecificDataEq(route, children, eq, setUserData, callback) {
     })
 }
 
+
+function listenToSpecificDataEq(route, children, eq, setUserData, callback) {
+  // Crear una consulta para escuchar datos de la base de datos Firebase
+  const dataQuery = query(
+    ref(db, route),
+    orderByChild(children),
+    equalTo(eq)
+  );
+
+  // Configurar el listener para los cambios en los datos
+  const unsubscribe = onValue(dataQuery, (snapshot) => {
+    if (snapshot.exists()) {
+      // Convertir el snapshot a un objeto de JavaScript
+      let snap = snapshot.val();
+      console.log(snap);
+      
+      // Actualizar los datos del usuario con los datos recuperados
+      setUserData(snap);
+      
+      // Ejecutar el callback si está proporcionado
+      if (callback) {
+        callback();
+      }
+    } else {
+      // Si no existen datos, puedes manejar esto si es necesario
+      console.log('No se encontraron datos');
+    }
+  }, (error) => {
+    // Manejar errores si la escucha falla
+    console.error('Error al escuchar los datos:', error);
+  });
+
+  // Devolver la función de desuscripción para que puedas dejar de escuchar cuando sea necesario
+  return unsubscribe;
+}
+
 function writeUserData(rute, object, setUserSuccess, callback) {
   console.log(rute)
   update(ref(db, rute), object)
@@ -99,4 +172,4 @@ async function removeData(rute, setUserSuccess, callback) {
       setUserSuccess('repeat'));
 }
 
-export { getData, writeUserData, removeData, getSpecificData, getSpecificDataEq }
+export { getData, writeUserData, removeData, getSpecificData, getSpecificDataEq, getSpecificData2, listenToSpecificDataEq}

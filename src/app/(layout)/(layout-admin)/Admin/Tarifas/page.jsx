@@ -13,6 +13,7 @@ import SelectSimple from '@/components/SelectSimple'
 import { params } from '@/utils/paramsP2P'
 import GetP2Pinterval from '@/components/GetP2Pinterval'
 import { useRouter } from 'next/navigation';
+import {getDayMonthYear2} from '@/utils/date'
 
 
 
@@ -303,17 +304,15 @@ export default function Home() {
       filterType: 'all'
     };
 
-
     let responseData = await fetch('/api/getP2Pbinance', {
       headers: {
         "Content-Length": "123",
         "content-type": "application/json",
       },
       method: 'POST',
-      body: JSON.stringify({ ...data, tradeType: 'BUY', }),
+      body: JSON.stringify({ ...data, tradeType: 'SELL', }),
 
     })
-
 
     let responseData2 = await fetch('/api/getP2Pbinance', {
       headers: {
@@ -324,13 +323,6 @@ export default function Home() {
       body: JSON.stringify({ ...data, tradeType: 'BUY', }),
 
     })
-
-
-
-
-
-
-
 
     const jsonData = await responseData.json();
     const jsonData2 = await responseData2.json();
@@ -344,7 +336,11 @@ export default function Home() {
       let tempMaxima2 = Math.max(...jsonData2.data.map((i) => i.adv.price));
       let tempMinima2 = Math.min(...jsonData2.data.map((i) => i.adv.price));
       let promedio2 = (tempMaxima2 + tempMinima2) / 2;
-      setState({ ...state, [i.code]: { ...state[i.code], compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } })
+
+
+      const cp = i['compra porcentaje'] ? promedio * ((i['compra porcentaje'] * 1)/100 ): 0
+      const vp = i['venta porcentaje'] ? promedio2 * ((i['venta porcentaje']*1)/100) : 0
+      setState({ ...state, [i.code]: { ...state[i.code], compra: (promedio + 0.01 - cp *1).toFixed(2), venta: (promedio2 + 0.01 + vp *1).toFixed(2), ...getDayMonthYear2()  } })
     } else {
       setModal('NonExchange')
       setItem({ ...i, transAmount: state[i.code] && state[i.code].transAmount ? state[i.code].transAmount : 0, })
@@ -652,13 +648,19 @@ export default function Home() {
                 Code
               </th>
               <th scope="col" className=" px-3 py-3">
-                Tasa de <br /> cambio USD
+                Tasa de <br /> cambio USDT
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Compra
               </th>
               <th scope="col" className="text-center px-3 py-3">
+                Compra- %
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
                 Venta
+              </th>
+              <th scope="col" className="text-center px-3 py-3">
+                Venta+ %
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Ultima Actualizacion
@@ -671,15 +673,15 @@ export default function Home() {
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Tarifa de Envio<br />
-                1 - 1000 USD
+                1 - 1000 USDT
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Tarifa de Envio <br />
-                1 001 - 10 000 USD
+                1 001 - 10 000 USDT
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Tarifa de Envio<br />
-                10 001 - 100 000 USD
+                10 001 - 100 000 USDT
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Guardar
@@ -702,17 +704,26 @@ export default function Home() {
                   {i.code}/{i.currency}
                 </td>
                 <td className="w-[150px] px-3 py-4 text-gray-900 ">
-                  1 USD  {exchange && exchange !== undefined && exchange[i.code] !== undefined && exchange[i.code]} {exchange && exchange !== undefined && exchange[i.code] !== undefined && `${i.code}`}
+                  1 USDT  {exchange && exchange !== undefined && exchange[i.code] !== undefined && exchange[i.code]} {exchange && exchange !== undefined && exchange[i.code] !== undefined && `${i.code}`}
                 </td>
                 <td className="w-32 p-4">
                   {/* <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['compra'] !== undefined ? i['compra'] : 0} /> */}
                   <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].compra ? state[i.code].compra : (i['compra'] !== undefined ? i['compra'] : '')} />
                 </td>
                 <td className="w-32 p-4">
+                  {/* <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['compra'] !== undefined ? i['compra'] : 0} /> */}
+                  <input type="number" name="compra porcentaje" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code]['compra porcentaje'] ? state[i.code]['compra porcentaje'] : (i['compra porcentaje'] !== undefined ? i['compra porcentaje'] : '')} />
+                </td>
+                <td className="w-32 p-4">
                   <input type="number" name="venta" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code].venta ? state[i.code].venta : (i['venta'] !== undefined ? i['venta'] : '')} />
                 </td>
+                <td className="w-32 p-4">
+                  {/* <input type="number" name="compra" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} defaultValue={i['compra'] !== undefined ? i['compra'] : 0} /> */}
+                  <input type="number" name="venta porcentaje" className='w-[100px] text-center p-2 outline-blue-200 rounded-xl' onChange={(e) => onChangeHandler(e, i)} value={state[i.code] && state[i.code]['venta porcentaje'] ? state[i.code]['venta porcentaje'] : (i['venta porcentaje'] !== undefined ? i['venta porcentaje'] : '')} />
+                </td>
                 <td className={`px-3 py-4 text-gray-900 ${((time_stamp - i.time_stamp) / 60000) > 60 && 'bg-red-200'} ${((time_stamp - i.time_stamp) / 60000) < 10 && 'bg-green-200'} ${((time_stamp - i.time_stamp) / 60000) > 10 && ((time_stamp - i.time_stamp) / 60000) < 60 && 'bg-yellow-200'}`}>
-                  {console.log(((time_stamp - i.time_stamp) / 60000) > 10 && ((time_stamp - i.time_stamp) / 60000) < 60)}
+                
+                {console.log(i.code + (time_stamp - i.time_stamp) / 60000)}
                   {i.actualizacion && i.actualizacion !== undefined ? <>{i.actualizacion.split(' ')[0]} <br /> {i.actualizacion.split(' ')[1]}</> : ''}
                 </td>
                 <td className="w-32 p-4">

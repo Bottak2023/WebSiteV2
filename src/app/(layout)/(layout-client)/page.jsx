@@ -20,7 +20,7 @@ function Whatsapp() {
     window.open('https://api.whatsapp.com/send?phone=+59177455743&text=Hola%20BOTTAK,%20necesito%20ayuda...', '_blank')
   }
   return <svg className='fixed bottom-[20px] right-[20px]' onClick={redirect} width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M33.9999 5.8201C32.1663 3.96796 29.9823 2.49945 27.5752 1.50022C25.1681 0.500986 22.5862 -0.0089602 19.9799 0.000119139C9.05997 0.000119139 0.16 8.90009 0.16 19.8201C0.16 23.32 1.08 26.72 2.79999 29.72L0 40L10.5 37.24C13.4 38.82 16.66 39.66 19.9799 39.66C30.8999 39.66 39.7999 30.76 39.7999 19.8401C39.7999 14.5401 37.7399 9.56009 33.9999 5.8201ZM19.9799 36.3C17.02 36.3 14.12 35.5 11.58 34L10.98 33.64L4.73999 35.28L6.39998 29.2L5.99998 28.58C4.35548 25.954 3.48227 22.9185 3.47999 19.8201C3.47999 10.7401 10.88 3.34011 19.9599 3.34011C24.3599 3.34011 28.4999 5.0601 31.5999 8.1801C33.1349 9.70802 34.3513 11.5254 35.1787 13.5269C36.0061 15.5284 36.428 17.6743 36.4199 19.8401C36.4599 28.92 29.0599 36.3 19.9799 36.3ZM29.0199 23.98C28.5199 23.74 26.0799 22.5401 25.6399 22.3601C25.1799 22.2001 24.8599 22.1201 24.5199 22.6001C24.1799 23.1 23.2399 24.22 22.9599 24.54C22.6799 24.88 22.3799 24.92 21.8799 24.66C21.3799 24.42 19.7799 23.88 17.8999 22.2001C16.42 20.8801 15.44 19.2601 15.14 18.7601C14.86 18.2601 15.1 18.0001 15.36 17.7401C15.58 17.5201 15.86 17.1601 16.1 16.8801C16.34 16.6001 16.44 16.3801 16.6 16.0601C16.76 15.7201 16.68 15.4401 16.56 15.2001C16.44 14.9601 15.44 12.5201 15.04 11.5201C14.64 10.5601 14.22 10.6801 13.92 10.6601H12.96C12.62 10.6601 12.1 10.7801 11.64 11.2801C11.2 11.7801 9.91997 12.9801 9.91997 15.4201C9.91997 17.8601 11.7 20.2201 11.94 20.5401C12.18 20.8801 15.44 25.88 20.3999 28.02C21.5799 28.54 22.4999 28.84 23.2199 29.06C24.3999 29.44 25.4799 29.38 26.3399 29.26C27.2999 29.12 29.2799 28.06 29.6799 26.9C30.0999 25.74 30.0999 24.76 29.9599 24.54C29.8199 24.32 29.5199 24.22 29.0199 23.98Z" fill="white"/>
+    <path d="M33.9999 5.8201C32.1663 3.96796 29.9823 2.49945 27.5752 1.50022C25.1681 0.500986 22.5862 -0.0089602 19.9799 0.000119139C9.05997 0.000119139 0.16 8.90009 0.16 19.8201C0.16 23.32 1.08 26.72 2.79999 29.72L0 40L10.5 37.24C13.4 38.82 16.66 39.66 19.9799 39.66C30.8999 39.66 39.7999 30.76 39.7999 19.8401C39.7999 14.5401 37.7399 9.56009 33.9999 5.8201ZM19.9799 36.3C17.02 36.3 14.12 35.5 11.58 34L10.98 33.64L4.73999 35.28L6.39998 29.2L5.99998 28.58C4.35548 25.954 3.48227 22.9185 3.47999 19.8201C3.47999 10.7401 10.88 3.34011 19.9599 3.34011C24.3599 3.34011 28.4999 5.0601 31.5999 8.1801C33.1349 9.70802 34.3513 11.5254 35.1787 13.5269C36.0061 15.5284 36.428 17.6743 36.4199 19.8401C36.4599 28.92 29.0599 36.3 19.9799 36.3ZM29.0199 23.98C28.5199 23.74 26.0799 22.5401 25.6399 22.3601C25.1799 22.2001 24.8599 22.1201 24.5199 22.6001C24.1799 23.1 23.2399 24.22 22.9599 24.54C22.6799 24.88 22.3799 24.92 21.8799 24.66C21.3799 24.42 19.7799 23.88 17.8999 22.2001C16.42 20.8801 15.44 19.2601 15.14 18.7601C14.86 18.2601 15.1 18.0001 15.36 17.7401C15.58 17.5201 15.86 17.1601 16.1 16.8801C16.34 16.6001 16.44 16.3801 16.6 16.0601C16.76 15.7201 16.68 15.4401 16.56 15.2001C16.44 14.9601 15.44 12.5201 15.04 11.5201C14.64 10.5601 14.22 10.6801 13.92 10.6601H12.96C12.62 10.6601 12.1 10.7801 11.64 11.2801C11.2 11.7801 9.91997 12.9801 9.91997 15.4201C9.91997 17.8601 11.7 20.2201 11.94 20.5401C12.18 20.8801 15.44 25.88 20.3999 28.02C21.5799 28.54 22.4999 28.84 23.2199 29.06C24.3999 29.44 25.4799 29.38 26.3399 29.26C27.2999 29.12 29.2799 28.06 29.6799 26.9C30.0999 25.74 30.0999 24.76 29.9599 24.54C29.8199 24.32 29.5199 24.22 29.0199 23.98Z" fill="white" />
   </svg>
 }
 
@@ -29,7 +29,7 @@ function Whatsapp() {
 
 
 function Page() {
-  const { nav, setNav, user, userDB, setUserProfile, select, setSelect, select2, setSelect2, isSelect, setIsSelect, isSelect2, setIsSelect2, state, setState, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, modal, setModal, setTransferencia, transferencia, divisas, setDivisas } = useUser()
+  const { nav, setNav, user, userDB, destinatario, setDestinatario, transactionDB, setTransactionDB, setUserProfile, comision, select, setSelect, select2, setSelect2, isSelect, setIsSelect, isSelect2, setIsSelect2, state, setState, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, modal, setModal, setTransferencia, transferencia, divisas, setDivisas } = useUser()
   const router = useRouter()
   const pathname = usePathname()
   const [modalInfo, setModalInfo] = useState(false)
@@ -94,7 +94,7 @@ function Page() {
     }
     if ((divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 100000) {
       window.open('https://api.whatsapp.com/send?phone=+59177455743&text=Hola%20BOTTAK,%20necesito%20hacer%20una%20transacci%C3%B3n...', '_blank')
-    return
+      return
     }
     if (user && userDB) {
       userDB.destinatarios && userDB.destinatarios !== undefined && Object.keys(userDB.destinatarios).length > 0
@@ -121,6 +121,10 @@ function Page() {
     setIsSelect2(!isSelect2)
     setIsSelect(false)
   }
+  useEffect(()=>{
+    destinatario !== undefined && setDestinatario(undefined)
+    transactionDB !== undefined &&setTransactionDB(undefined)
+  },[destinatario, transactionDB])
 
   return (
     <>
@@ -153,15 +157,17 @@ function Page() {
           <div className="">
             <div className='grid grid-cols-2 gap-[15px]'>
               <span className='text-white text-[14px] font-light'>Tasa de cambio </span>
-              <span className='text-white text-[14px] font-light'>{divisas && divisas !== undefined && divisas[select2] && divisas[select2] !== undefined && select2 && select2 !== undefined && (divisas[select2].venta / divisas[select2].venta).toFixed(2)} {select2} = {divisas && divisas !== undefined && divisas[select] && divisas[select] !== undefined && select && select !== undefined && (divisas[select].venta / divisas[select2].venta).toFixed(2)} {select}</span>
+              <span className='text-white text-[14px] font-light'>{divisas && divisas !== undefined && divisas[select2] && divisas[select2] !== undefined && select2 && select2 !== undefined && (divisas[select2].venta / divisas[select2].venta).toFixed(2)} {select2 === 'USD' ? 'USDT': select2} = {divisas && divisas !== undefined && divisas[select] && divisas[select] !== undefined && select && select !== undefined && (divisas[select].venta / divisas[select2].venta).toFixed(2)} {select === 'USD' ? 'USDT' :select}</span>
             </div>
             <div className='grid grid-cols-2 gap-[15px]'>
               <span className='text-white text-[14px] font-light'>Comisiones</span>
               <span className='text-white text-[14px] font-light'>
-                {(divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 1000 && (divisas[select]['tarifa 1'] * transferencia /100) + ' ' + select}
-                {(divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 10000 && (divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 1000 && (divisas[select]['tarifa 2']* transferencia /100) + ' ' + select}
-                {(divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 100000 && (divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 10000 && (divisas[select]['tarifa 3']* transferencia /100) + ' ' + select}
+                {comision} {select === 'USD'?'USDT' :select}
+                {/* {(divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 1000 && (divisas[select]['tarifa 1'] * transferencia /100).toFixed(2) + ' ' + select}
+                {(divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 10000 && (divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 1000 && (divisas[select]['tarifa 2']* transferencia /100).toFixed(2) + ' ' + select}
+                {(divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) <= 100000 && (divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 10000 && (divisas[select]['tarifa 3']* transferencia /100).toFixed(2) + ' ' + select}
                 {(divisas && divisas[select] && divisas[select2] && (transferencia * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 100000 && 'CONTACTESE CON SOPORTE'}
+               */}
               </span>
             </div>
             <br />

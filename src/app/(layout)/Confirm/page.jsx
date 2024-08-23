@@ -20,6 +20,8 @@ function Home() {
     const redirectHandler = (route) => {
         router.replace(route)
     }
+
+    // AQUI SE CONFIRMAN LOS DATOS Y VALORES DE TRANSACCION
     function save(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -29,10 +31,10 @@ function Home() {
             ['dni remitente']: userDB && userDB && userDB.dni,
             ['pais remitente']: userDB && userDB && userDB.pais,
             ['divisa de envio']: select,
-            importe: transferencia + comision,
+            importe: (transferencia * 1 + comision * 1).toFixed(2),
             comision,
             ['divisa de receptor']: select2,
-            cambio: divisas && divisas[select] && divisas[select2] ? divisas && divisas[select] && divisas[select2] && ((transferencia + comision) * divisas[select2].venta / divisas[select].venta).toFixed(2) : '',
+            cambio: divisas && divisas[select] && divisas[select2] && (transferencia * divisas[select2].venta / divisas[select].venta).toFixed(2),
             estado: 'En verficación',
             ['user uuid']: user.uid,
             notificaciones: true,
@@ -50,132 +52,152 @@ function Home() {
     return (
         <div className='w-full'>
             {modal === 'Guardando...' && <Loader> {modal} </Loader>}
-            {destinatario !== undefined && transferencia !== '' && <div className='relative left-0 right-0 mx-0 sm:max-h-[80vh] overflow-y-auto rounded-[20px]'>
-                <table className="relative sm:left-0 sm:right-0 mx-auto lg:left-auto lg:right-auto w-full overflow-hidden sm:w-[500px] lg:min-w-auto text-[14px] text-left text-gray-500 bg-white rounded-[20px]" style={{ height: '100px' }}>
-                    <thead className="w-full text-[14px] text-gray-700 uppercase bg-gray-50">
-                        <tr className="w-full text-[14px] text-center font-semibold border-b hover:bg-gray-50 ">
-                            <th></th>
-                            <th className='px-2 py-2 text-left'>Datos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2 flex flex-col text-[14px] text-gray-700 ">
-                                Remitente
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {userDB && userDB && userDB.nombre}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2 flex flex-col text-[14px] text-gray-700 ">
-                                DNI remitente
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {userDB && userDB && userDB.dni}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2 flex flex-col text-[14px] text-gray-700 ">
-                                Pais remitente
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {userDB && userDB && userDB.pais}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2 flex flex-col text-[14px] text-gray-700 ">
-                                Destinatario
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {destinatario.destinatario && destinatario.destinatario}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2 flex flex-col text-[14px] text-gray-700 ">
-                                DNI destinatario
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {destinatario.dni && destinatario.dni}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2 flex flex-col text-[14px] text-gray-700 ">
-                                Pais destinatario
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {destinatario.pais && destinatario.pais}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2 flex flex-col text-[14px] text-gray-700 ">
-                                Celular de destinatario
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {destinatario.celular && destinatario.celular}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2  text-gray-900 ">
-                                Cuenta destinatario:
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {destinatario['cuenta destinatario'] && destinatario['cuenta destinatario']}
-                            </td>
-                        </tr>
-                        {/* <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2  text-gray-900 ">
+            {destinatario !== undefined && transferencia !== '' && <div className='relative left-0 right-0 mx-0   rounded-[20px]'>
+                <div className="relative sm:left-0 sm:right-0 mx-auto  w-full overflow-y-auto sm:w-[500px] sm:max-h-[87vh] lg:w-[70%] lg:min-w-auto text-[14px] text-gray-500 bg-white rounded-[5px] p-5">
+
+                    <table className='w-full' >
+                        <thead className="w-full text-[14px] text-gray-900 uppercase bg-gray-50">
+
+                            <tr className="w-full text-[14px] text-center font-semibold border-b bg-gray-800 ">
+                                <th colspan="2" scope="colgroup" className='px-2 py-2 text-center text-white'>
+                                    Verifique los datos de transacción <br />
+                                    El Importe neto con el cambio aplicado podria variar en la operacion por las fluctuaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 flex flex-col bg-[#00000020] font-bold text-[14px] text-gray-900 ">
+                                    Remitente
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040] ">
+                                    {userDB && userDB && userDB.nombre}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 flex flex-col bg-[#00000020] font-bold text-[14px] text-gray-900 ">
+                                    DNI remitente
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {userDB && userDB && userDB.dni}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 flex flex-col bg-[#00000020] font-bold text-[14px] text-gray-900 ">
+                                    Pais remitente
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {userDB && userDB && userDB.pais}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 flex flex-col bg-[#00000020] font-bold text-[14px] text-gray-900 ">
+                                    Destinatario
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {destinatario.destinatario && destinatario.destinatario}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 flex flex-col bg-[#00000020] font-bold text-[14px] text-gray-900 ">
+                                    DNI destinatario
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {destinatario.dni && destinatario.dni}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 flex flex-col bg-[#00000020] font-bold text-[14px] text-gray-900 ">
+                                    Pais destinatario
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {destinatario.pais && destinatario.pais}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 flex flex-col bg-[#00000020] font-bold text-[14px] text-gray-900 ">
+                                    Celular de destinatario
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {destinatario.celular && destinatario.celular}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px]  border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 bg-[#00000020]   font-bold  text-gray-900 ">
+                                    Cuenta destinatario
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {destinatario['cuenta destinatario'] && destinatario['cuenta destinatario']}
+                                </td>
+                            </tr>
+                            {/* <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                            <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
                                 Divisa de envio:
                             </td>
-                            <td className="px-2 py-2  text-gray-900 ">
+                            <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
                                 {select}
                             </td>
                         </tr> */}
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2  text-gray-900 ">
-                                Importe mas comision:
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {transferencia + comision} {select}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2  text-gray-900 ">
-                                comision:
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {comision} {select}
-                            </td>
-                        </tr>
-                        {/* <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2  text-gray-900 ">
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 bg-[#00000020]  font-bold  text-gray-900 ">
+                                    Importe mas comision
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {(transferencia * 1 + comision * 1).toFixed(2)} {select === 'USD' ? 'USDT' :select}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 bg-[#00000020]  font-bold  text-gray-900 ">
+                                    comision
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {comision} {select === 'USD' ? 'USDT' :select}
+                                </td>
+                            </tr>
+                            {/* <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                            <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
                                 Divisa de receptor:
                             </td>
-                            <td className="px-2 py-2  text-gray-900 ">
+                            <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
                                 {select2}
                             </td>
                         </tr> */}
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2  text-gray-900 ">
-                                Importe mas comision <br /> con el cambio aplicado:
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {divisas && divisas[select] && divisas[select2] ? divisas && divisas[select] && divisas[select2] && ((transferencia + comision) * divisas[select2].venta / divisas[select].venta).toFixed(2) : ''} {select2}
-                            </td>
-                        </tr>
-                        <tr className=" text-[14px] border-b hover:bg-gray-50 " >
-                            <td className="px-2 py-2  text-gray-900 ">
-                                Operacion:
-                            </td>
-                            <td className="px-2 py-2  text-gray-900 ">
-                                {destinatario.operacion}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div className='flex justify-center pt-5'>
-                    <Button theme='Primary' click={save}>Confirmar datos</Button>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 bg-[#00000020]  font-bold  text-gray-900 ">
+                                    Importe neto <br /> con el cambio aplicado para el receptor
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040] bg-yellow-300">
+
+                                    {divisas && divisas[select] && divisas[select2] && (transferencia * divisas[select2].venta / divisas[select].venta).toFixed(2)} {select2 === 'USD' ? 'USDT' :select2} 
+
+                                    {/* {divisas && divisas[select] && divisas[select2] ? divisas && divisas[select] && divisas[select2] && ((transferencia *1 + comision*1) * divisas[select2].venta / divisas[select].venta).toFixed(2) : ''} {select2} */}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 bg-[#00000020]  font-bold  text-gray-900 ">
+                                    Operacion
+                                </td>
+                                <td className="px-2 py-2  text-gray-900  border-r border-[#00000040]">
+                                    {destinatario.operacion}
+                                </td>
+                            </tr>
+                            <tr className=" text-[14px] border-b border-[#00000040] hover:bg-gray-50 " >
+                                <td className="px-2 py-2 font-bold  text-gray-900 ">
+                                    <div className='flex justify-center pt-5'>
+                                        <Button theme={"Disable"} click={() => router.back()}>Atras</Button>
+                                    </div>                            </td>
+                                <td className="px-2 py-2  text-gray-900  ">
+                                    <div className='flex justify-center pt-5'>
+                                        <Button theme={"Success"} click={save}>Confirmar datos</Button>
+                                    </div>                            </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+
                 </div>
+
+
             </div>}
         </div>
     )

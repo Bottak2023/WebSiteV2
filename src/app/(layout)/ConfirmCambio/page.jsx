@@ -116,7 +116,7 @@ function Home() {
                                 Divisa de envio
                             </td>
                             <td className="px-2 py-2  text-gray-900 ">
-                                {select}
+                            {select === 'USD' ? 'USDT' :select}
                             </td>
                         </tr>
                         <tr className=" text-[14px] border-b hover:bg-gray-50 " >
@@ -124,7 +124,7 @@ function Home() {
                                 Importe mas comision
                             </td>
                             <td className="px-2 py-2  text-gray-900 ">
-                                {transferencia + comision} {select}
+                                {transferencia + comision} {select === 'USD' ? 'USDT' :select}
                             </td>
                         </tr>
                         <tr className=" text-[14px] border-b hover:bg-gray-50 " >
@@ -132,7 +132,7 @@ function Home() {
                                 Comision
                             </td>
                             <td className="px-2 py-2  text-gray-900 ">
-                                {comision} {select}
+                                {comision} {select === 'USD' ? 'USDT' :select}
                             </td>
                         </tr>
                         <tr className=" text-[14px] border-b hover:bg-gray-50 " >

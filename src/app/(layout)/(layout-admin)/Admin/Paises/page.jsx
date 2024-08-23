@@ -108,9 +108,9 @@ export default function Home() {
       setRouteCountry(null)
     }
     const callback = () => {
-      uploadStorage(`currencies/${routeCountry.cca3}/countries/${e.target[3].value}`, postImageQR, { banco: e.target[3].value, ['cta bancaria']: e.target[4].value }, callback2, 'qrURL')
+      uploadStorage(`currencies/${routeCountry.cca3}/countries/${e.target[3].value}`, postImageQR, { banco: e.target[3].value, ['cta bancaria']: e.target[4].value, dominio : e.target[5].value  }, callback2, 'qrURL')
     }
-    uploadStorage(`currencies/${routeCountry.cca3}/countries/${e.target[3].value}`, postImageBank, { banco: e.target[3].value, ['cta bancaria']: e.target[4].value }, callback)
+    uploadStorage(`currencies/${routeCountry.cca3}/countries/${e.target[3].value}`, postImageBank, { banco: e.target[3].value, ['cta bancaria']: e.target[4].value, dominio : e.target[5].value }, callback)
   }
   function manageInputIMGbank(e, name) {
     const file = e.target.files[0]
@@ -240,6 +240,7 @@ export default function Home() {
                     <img src={e.qrURL} className='w-[30px]' alt="Subir QR" />
                     <span className='inline-block  pl-[10px]'>{e.banco}</span>
                     <span className='inline-block  pl-[10px]'>{e['cta bancaria']}</span>
+                    <span className='inline-block  pl-[10px]'>{e['dominio']}</span>
                     <svg className='cursor-pointer' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48" onClick={() => handlerBankRemove(i, e)}>
                       <path fill="#f44336" d="M44,24c0,11-9,20-20,20S4,35,4,24S13,4,24,4S44,13,44,24z"></path><line x1="16.9" x2="31.1" y1="16.9" y2="31.1" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="4"></line><line x1="31.1" x2="16.9" y1="16.9" y2="31.1" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="4"></line>
                     </svg>
@@ -339,7 +340,10 @@ export default function Home() {
                   <Label htmlFor="">Cta. bancaria</Label>
                   <Input type="text" name="cta bancaria" defValue={'banco'} require />
                 </div>
-
+                <div className='space-y-5'>
+                  <Label htmlFor="">Dominio App</Label>
+                  <Input type="text" name="dominio" defValue={'dominio'} require />
+                </div>
               </div>
 
               <div className='flex w-full justify-around'>

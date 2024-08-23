@@ -121,9 +121,9 @@ export default function Home() {
         {/* <h3 className='text-[greenyellow] text-[14px] font-light'>Solo disponible para Bolivia</h3> */}
 
         <div className="relative flex justify-between  w-[100%] sm:max-w-[350px] py-1 ">
-          <span className="bg-transparent w-1/2 py-1 border-[1px] border-gray-200 text-gray-200 text-center">{divisas && divisas !== undefined && divisas[select] && divisas[select] !== undefined && select && select !== undefined && (divisas[select].venta / divisas[select].venta).toFixed(2)} {select}</span>
+          <span className="bg-transparent w-1/2 py-1 border-[1px] border-gray-200 text-gray-200 text-center">{divisas && divisas !== undefined && divisas[select] && divisas[select] !== undefined && select && select !== undefined && (divisas[select].venta / divisas[select].venta).toFixed(2)} {select === 'USD' ? 'USDT' :select}</span>
           <button className='absolute left-0 right-0 top-0 bottom-0 m-auto bg-[yellow] rounded-full w-[50px] h-[50px]'></button>
-          <span className="bg-gray-200 w-1/2 py-1 border-[1px] border-gray-200 text-center">{divisas && divisas !== undefined && divisas[select2] && divisas[select2] !== undefined && select2 && select2 !== undefined && (divisas[select2].venta / divisas[select].venta).toFixed(2)} {select2}</span>
+          <span className="bg-gray-200 w-1/2 py-1 border-[1px] border-gray-200 text-center">{divisas && divisas !== undefined && divisas[select2] && divisas[select2] !== undefined && select2 && select2 !== undefined && (divisas[select2].venta / divisas[select].venta).toFixed(2)} {select2 === 'USD' ? 'USDT' :select2}</span>
         </div>
         <SelectCambio onChange="Transference" placeholder='Monto a cambiar' propHandlerSelect={handlerSelect} propSelect={select} propHandlerIsSelect={handlerIsSelect} propIsSelect={isSelect} defaultValue={transferencia} />
         <span className='text-[#FFF500] text-[14px] font-light'>Cambiar a:</span>
@@ -132,7 +132,7 @@ export default function Home() {
         <div className="">
           <div className='grid grid-cols-2 gap-[15px]'>
             <span className='text-white text-[14px] font-light'>Tasa de cambio </span>
-            <span className='text-white text-[14px] font-light'>{divisas && divisas !== undefined && divisas[select2] && divisas[select2] !== undefined && select2 && select2 !== undefined && (divisas[select2].venta / divisas[select2].venta).toFixed(2)} {select2} = {divisas && divisas !== undefined && divisas[select] && divisas[select] !== undefined && select && select !== undefined && (divisas[select].venta / divisas[select2].venta).toFixed(2)} {select}</span>
+            <span className='text-white text-[14px] font-light'>{divisas && divisas !== undefined && divisas[select2] && divisas[select2] !== undefined && select2 && select2 !== undefined && (divisas[select2].venta / divisas[select2].venta).toFixed(2)} {select2 === 'USD' ? 'USDT' :select2} = {divisas && divisas !== undefined && divisas[select] && divisas[select] !== undefined && select && select !== undefined && (divisas[select].venta / divisas[select2].venta).toFixed(2)} {select === 'USD' ? 'USDT' :select}</span>
           </div>
           <div className='grid grid-cols-2 gap-[15px]'>
             <span className='text-white text-[14px] font-light'>Comisiones</span>

@@ -222,11 +222,11 @@ export default function Navbar({ children }) {
                             <Link href="/MisCambios" className="flex flex-col justify-between items-center bg-[#FFF500] text-[12px]  text-center font-medium   px-3 py-3 rounded-[15px]   sm:hover:bg-transparent border-[2px] border-[#FFF500] sm:hover:text-yellow-300 text-black " onClick={() => setNav(false)}>
                                 <Historial />
                                 Mis cambios
-                            </Link> 
+                            </Link>
                             <Link href="/Notificaciones" className="flex flex-col justify-between items-center bg-[#FFF500] text-[12px]  text-center font-medium   px-3 py-3 rounded-[15px]   sm:hover:bg-transparent border-[2px] border-[#FFF500] sm:hover:text-yellow-300 text-black " onClick={() => setNav(false)}>
-                                    <Notificaciones />
-                                    Notificaciones
-                                </Link>
+                                <Notificaciones />
+                                Notificaciones
+                            </Link>
                             {user !== null && user !== undefined
                                 ? <button className="flex flex-col justify-between items-center bg-[#FFF500] text-[12px]  text-center font-medium   px-3 py-3 rounded-[15px] hover:bg-gray-100 sm:hover:bg-transparent border-[2px] border-[#FFF500] sm:hover:text-yellow-300 text-black" onClick={signOutHandler}>
                                     <Logout />
@@ -237,7 +237,7 @@ export default function Navbar({ children }) {
                                     Iniciar Sesión
                                 </Link>
                             }
-                            
+
                         </>}
                     </div>
                 </li>}
@@ -341,16 +341,18 @@ export default function Navbar({ children }) {
             </ul>
             {console.log(enviosDB)}
             <div className={` ${notificaciones === true ? 'bg-white absolute top-[70px] left-0 right-0 sm:left-auto mx-auto h-[400px] w-[90%] sm:w-[500px] p-5 z-40 sm:right-[10px] rounded-[10px] overflow-y-auto' : 'h-0 w-0 overflow-hidden'}`} onClick={(e) => e.stopPropagation()}>
-                {((enviosDB && enviosDB !== undefined) || (cambiosDB && cambiosDB !== undefined)) && Object.values(enviosDB && enviosDB !== undefined && cambiosDB && cambiosDB !== undefined ?{...enviosDB, ...cambiosDB }: (enviosDB && enviosDB !== undefined ?enviosDB :(cambiosDB && cambiosDB !== undefined ? cambiosDB: {}))).filter((i) => i.notificaciones !== undefined && i.notificaciones === true).length > 0 ? <ul> {Object.values({ ...enviosDB, ...cambiosDB }).filter((i) => i.notificaciones !== undefined && i.notificaciones === true).sort((a, b) => b.date - a.date).map((i, index) => {
-                    return <li className='relative pb-4 border-b-[1px] border-gray-300 text-black' >
-                        <span className='w-full pr-[10px]'>Tu {i.operacion} de dinero de 
+                {((enviosDB && enviosDB !== undefined) || (cambiosDB && cambiosDB !== undefined)) && Object.values(enviosDB && enviosDB !== undefined && cambiosDB && cambiosDB !== undefined ? { ...enviosDB, ...cambiosDB } : (enviosDB && enviosDB !== undefined ? enviosDB : (cambiosDB && cambiosDB !== undefined ? cambiosDB : {}))).filter((i) => i.notificaciones !== undefined && i.notificaciones === true).length > 0 ? <ul> {Object.values({ ...enviosDB, ...cambiosDB }).filter((i) => i.notificaciones !== undefined && i.notificaciones === true).sort((a, b) => b.date - a.date).map((i, index) => {
+                    return <li className='relative pb-4 pt-2 pr-5 border-b-[1px] border-gray-300 text-black' >
+                        <span className='w-full pr-[10px]'>Tu {i.operacion} de dinero de
                             <b> {i['divisa de envio']} {i.importe}</b>  {i.destinatario !== undefined ? `a ${i.destinatario}, ` : ''}
-                            <span className={` text-black ${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'En verficación' && 'esta en verificación'}</span>
-                            <span className={` text-black ${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'Transfiriendo' && 'ya se esta transfiriendo'}</span>
-                            <span className={` text-black ${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'Exitoso' && 'ha sido exitoso'}</span>
-                            <span className={` text-black ${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'Rechazado' && 'ha sido rechazado'}</span>
-                        </span>                        <span className="absolute bottom-[3px] right-0 text-[10px]">{getDayMonthYear(i.date)}</span>
-                        <button type="button" className="absolute top-[-5px] right-[-5px] text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-[14px] w-8 h-8 ml-auto inline-flex justify-center items-center" onClick={() => handlerNotificaciones(i)}>
+                            {i.estado == 'En verificación' && <span className={` text-black`}>esta en verificación.</span>}
+                            {i.estado == 'Verificado' && <span className={` text-black  bg-blue-100`}>esta VERIFICADO, la transaferencia esta apunto de realizarse.</span>}
+                            {i.estado == 'Transfiriendo' && <span className={` text-black  bg-yellow-100`}>'ya se esta transfiriendo.</span>}
+                            {i.estado == 'Exitoso' && <span className={` text-black bg-green-100`}>ha sido exitoso.</span>}
+                            {i.estado == 'Rechazado' && <span className={` text-black bg-red-100 `}>ha sido rechazado.</span>}
+                        </span>
+                        <span className="absolute bottom-[3px] right-0 text-[10px]">{getDayMonthYear(i.date)}</span>
+                        <button type="button" className="absolute top-[-7px] right-[-5px] text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-[14px] w-8 h-8 ml-auto inline-flex justify-center items-center" onClick={() => handlerNotificaciones(i)}>
                             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>

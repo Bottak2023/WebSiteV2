@@ -23,12 +23,12 @@ function getDayMonthYear() {
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
     let dateDB = new Date();
     let options = { timeZone: 'America/La_Paz' };
-    let date =  new Date(dateDB.toLocaleString('en-US', options))
+    let date = new Date(dateDB.toLocaleString('en-US', options))
 
     return {
         actualizacion: `${date.getHours() > 9 ? date.getHours() : '0' + date.getHours()}:${date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()} ${date.getDate().toString().length === 1 ? '0' + date.getDate().toString() : date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`,
         time_stamp: date.getTime()
-}
+    }
 }
 
 
@@ -50,7 +50,7 @@ export default async function account(req, res) {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"
     };
 
-    async function getExchange(data, pila) {
+    async function getExchange(data, pila, i) {
         const responseData = await fetch(
             'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search',
             {
@@ -84,10 +84,13 @@ export default async function account(req, res) {
             let promedio2 = (tempMaxima2 + tempMinima2) / 2;
 
             const ref = db.ref(`divisas/${data.fiat}`);
-            await ref.update({ compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2),  ...getDayMonthYear() })
+            const cp = i['compra porcentaje'] ? promedio * ((i['compra porcentaje'] * 1)/100 ): 0
+            const vp = i['venta porcentaje'] ? promedio2 * ((i['venta porcentaje']*1)/100) : 0
+
+            await ref.update({ compra: (promedio + 0.01  - cp *1).toFixed(2), venta: (promedio2 + 0.01 + vp *1).toFixed(2), ...getDayMonthYear() })
 
             // console.log({ [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } })
-            acc = { ...acc, [data.fiat]: { compra: (promedio + 0.01).toFixed(2), venta: (promedio2 + 0.01).toFixed(2) } }
+            acc = { ...acc, [data.fiat]: { compra: (promedio + 0.01 - cp *1).toFixed(2), venta: (promedio2 + 0.01 + vp *1).toFixed(2) } }
 
         }
 
@@ -118,10 +121,8 @@ export default async function account(req, res) {
                     rows: 5,
                     filterType: 'all'
                 };
-                // console.log(index * 1 + 1)
-                // console.log(resData.length * 1)
-                // console.log(index * 1 + 1 == resData.length * 1)
-                getExchange(data, index * 1 + 1 == resData.length * 1)
+
+                getExchange(data, index * 1 + 1 == resData.length * 1, i)
             })
 
 

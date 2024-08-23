@@ -45,21 +45,25 @@ export default function Home() {
                 {/* <div className="w-[405px] grid grid-cols-2 gap-[5px]" >
                     <input type="text" className='border-b-[1px] text-[14px] outline-none w-[200px]' onChange={onChangeFilter} placeholder='Buscar Destinatario' />
                 </div> */}
-                <div className={'bg-white top-[70px] w-full sm:w-[500px] p-5 z-40 sm-right-[10px]'}>
-                    {enviosDB && enviosDB !== undefined && cambiosDB && cambiosDB !== undefined ? <ul> {Object.values({ ...enviosDB, ...cambiosDB }).sort((a, b) => b.date - a.date ).map((i, index) => {
-                        return<li className='relative pb-4 border-b-[1px] border-gray-300' >
-                        <span className='w-full pr-[10px]'>Tu {i.operacion} de dinero de 
-                        <b> {i['divisa de envio']} {i.importe}</b>  {i.destinatario !== undefined ? `a ${i.destinatario}, `: ''} 
-                        <span className={`${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'En verficación' && 'esta en verificación'}</span>
-                        <span className={`${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'Transfiriendo' && 'ya se esta transfiriendo'}</span>
-                        <span className={`${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'Exitoso' && 'ha sido exitoso'}</span>
-                        <span className={`${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i.estado === 'Rechazado' && 'ha sido rechazado'}</span>
-                        </span>
-                        <span className="absolute bottom-[3px] right-0 text-[10px]">{getDayMonthYear(i.date)}</span>
-                       
-                    </li>
-                        
-                        
+                <div className={'bg-white top-[70px] w-full  p-5 z-40 sm-right-[10px]'}>
+                    {((enviosDB && enviosDB !== undefined) || (cambiosDB && cambiosDB !== undefined)) ? <ul> {Object.values(enviosDB && enviosDB !== undefined && cambiosDB && cambiosDB !== undefined ? { ...enviosDB, ...cambiosDB } : (enviosDB && enviosDB !== undefined ? enviosDB : (cambiosDB && cambiosDB !== undefined ? cambiosDB : {}))).sort((a, b) => b.date - a.date).map((i, index) => {
+                        return <li className='relative pb-8 border-b-[1px] border-gray-300' >
+                            <span className='w-full pr-[10px]'>Tu {i.operacion} de dinero de
+                                <b> {i['divisa de envio']} {i.importe}</b>  {i.destinatario !== undefined ? `a ${i.destinatario}, ` : ''}
+                                {i.estado == 'En verificación' && <span className={` text-black`}>esta en verificación.</span>}
+                                {i.estado == 'Verificado' && <span className={` text-black  bg-blue-100`}>esta VERIFICADO, la transaferencia esta apunto de realizarse.</span>}
+                                {i.estado == 'Transfiriendo' && <span className={` text-black  bg-yellow-100`}>'ya se esta transfiriendo.</span>}
+                                {i.estado == 'Exitoso' && <span className={` text-black bg-green-100`}>ha sido exitoso.</span>}
+                                {i.estado == 'Rechazado' && <span className={` text-black bg-red-100 `}>ha sido rechazado.</span>}
+
+                            </span>
+                            <span className="absolute bottom-[15px] right-0 text-[10px]">{getDayMonthYear(i.date)}</span>
+                            <span className="absolute bottom-[2px] right-0 text-[10px]">ID:{i.uuid}</span>
+
+
+                        </li>
+
+
                     })
                     }</ul>
                         : <ul>

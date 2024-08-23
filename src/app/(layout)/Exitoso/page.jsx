@@ -22,8 +22,10 @@ function Home() {
 
     useEffect(() => {
         transactionDB !== undefined && QRurl === null && document.getElementById('qr') && setQRurl(document.getElementById('qr').toDataURL())
-        transactionDB === undefined && getSpecificData(`/envios/${pathname}`, setTransactionDB)
-    }, [user, userDB, QRurl, transactionDB])
+    }, [QRurl])
+    useEffect(() => {
+        getSpecificData(`/envios/${pathname}`, setTransactionDB)
+    }, [])
 
     return (
         transactionDB && transactionDB !== undefined && <main className=''>
@@ -119,7 +121,7 @@ function Home() {
                                         Importe mas comision:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                        {transactionDB.importe && transactionDB.importe} {transactionDB['divisa de envio'] && transactionDB['divisa de envio']}
+                                        {transactionDB.importe && transactionDB.importe} {transactionDB['divisa de envio'] && (transactionDB['divisa de envio'] === 'USD'? 'USDT' :transactionDB['divisa de envio'])}
                                     </td>
                                 </tr>
                                 <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >
@@ -127,7 +129,7 @@ function Home() {
                                         Comision:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                        {transactionDB.comision} {transactionDB['divisa de envio'] && transactionDB['divisa de envio']}
+                                        {transactionDB.comision} {transactionDB['divisa de envio'] && (transactionDB['divisa de envio'] === 'USD'? 'USDT' :transactionDB['divisa de envio'])}
                                     </td>
                                 </tr>
                                 {/* <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >
@@ -143,7 +145,7 @@ function Home() {
                                         Importe mas comision con el cambio aplicado:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                        {transactionDB.cambio && transactionDB.cambio} {transactionDB['divisa de receptor'] && transactionDB['divisa de receptor']}
+                                        {transactionDB.cambio && transactionDB.cambio} {transactionDB['divisa de receptor'] && (transactionDB['divisa de receptor'] === 'USD'? 'USDT' :transactionDB['divisa de receptor'])}
                                     </td>
                                 </tr>
                                 <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >

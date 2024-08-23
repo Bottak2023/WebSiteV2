@@ -6,7 +6,7 @@ import { onAuth, handleSignOut } from '@/firebase/utils'
 import { useRouter } from 'next/navigation';
 import Particles from '@/components/Particles'
 import { useEffect } from 'react'
-import { getSpecificData, getSpecificDataEq} from '@/firebase/database'
+import { getSpecificData, getSpecificDataEq, listenToSpecificDataEq} from '@/firebase/database'
 
 export default function RootLayout({ children }) {
 
@@ -44,8 +44,8 @@ export default function RootLayout({ children }) {
     }, [])
     useEffect(() => {
         user && userDB === undefined && getSpecificData(`/users/${user.uid}`, setUserData)
-        user && user !== undefined && getSpecificDataEq(`/envios/`, 'user uuid', user.uid, setEnviosDB )
-        user && user !== undefined && getSpecificDataEq(`/cambios/`, 'user uuid', user.uid, setCambiosDB )
+        user && user !== undefined && listenToSpecificDataEq(`/envios/`, 'user uuid', user.uid, setEnviosDB )
+        user && user !== undefined && listenToSpecificDataEq(`/cambios/`, 'user uuid', user.uid, setCambiosDB )
     }, [user, userDB])
 
     return (

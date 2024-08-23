@@ -66,15 +66,15 @@ export default function Home() {
                             </th>
                             <th scope="col" className="text-center px-3 py-3">
                                 Tarifa de Envio<br />
-                                1 - 1000 USD
+                                1 - 1000 USDT
                             </th>
                             <th scope="col" className="text-center px-3 py-3">
                                 Tarifa de Envio <br />
-                                10 000 - 100 000 USD
+                                10 000 - 100 000 USDT
                             </th>
                             <th scope="col" className="text-center px-3 py-3">
                                 Tarifa de Envio<br />
-                                100 000 - ... USD
+                                100 000 - ... USDT
                             </th>
                         </tr>
                     </thead>
@@ -91,7 +91,7 @@ export default function Home() {
                                     {i.code}
                                 </td>
                                 <td className="px-3 py-4 text-gray-900 ">
-                                    1 USD
+                                    1 USDT
                                 </td>
                                 <td className="min-w-32 p-4 text-center">
                                     {i['compra'] !== undefined ? i['compra'] + ' ' + i.code : '-----'} 

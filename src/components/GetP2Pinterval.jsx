@@ -6,11 +6,6 @@ import { useUser } from '@/context/Context'
 
 import React, { useState, useEffect } from "react";
 
-
-// import "./StopWatch.css";
-// import Timer from "../Timer/Timer";
-
-
 function ControlButtons(props) {
   const StartButton = (
     <button className="bg-green-500 text-center w-[150px] py-1 rounded-full"
@@ -43,20 +38,7 @@ function StopWatch() {
 
   const [count, setCount] = useState(0);
 
-
-
-
-
-
-
-
-    const {setTime_stamp, user, userDB, setUserProfile, modal, setModal, users, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, item, setItem, exchange, setExchange, } = useUser()
-
-
-
-
-
-
+  const { setTime_stamp, user, userDB, setUserProfile, modal, setModal, users, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, item, setItem, exchange, setExchange, } = useUser()
 
   const Timer = () => {
 
@@ -64,9 +46,6 @@ function StopWatch() {
       //Implementing the setInterval method
       const interval = setInterval(() => {
         setCount(count + 1);
-
-
-       
       }, 1000);
 
       //Clearing the interval
@@ -82,7 +61,7 @@ function StopWatch() {
         }}
       >
         <h1 className="text-green-500">
-          Cronometro de Actualizacion 
+          Cronometro de Actualizacion
         </h1>
         {/* <h3>
           React Example for using setInterval method
@@ -91,20 +70,6 @@ function StopWatch() {
       </div>
     );
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   async function getAllExchage(i) {
@@ -125,20 +90,13 @@ function StopWatch() {
     if (isActive && isPaused === false) {
       interval = setInterval(() => {
 
-
-
         let dateDB = new Date();
         let options = { timeZone: 'America/La_Paz' };
-        let date =  new Date(dateDB.toLocaleString('en-US', options))
-      
+        let date = new Date(dateDB.toLocaleString('en-US', options))
+
         setTime_stamp(date.getTime())
-
-
-
         setTime(time * 1 + 60000);
         getAllExchage()
-
-
 
       }, 60000);
     } else {

@@ -19,11 +19,12 @@ export default function isSelect3({ arr, name, click, defaul, uuid }) {
     function handlerUserState(name, i) {
         setState(i)
         click(name, i, uuid)
+        setIsSelect3(false)
     }
     return (
         <div className={`relative w-[100%] sm:min-w-[150px] sm:max-w-[350px] bg-transparent border-[.5px] border-gray-300 text-gray-900 text-[14px] rounded-xl block  p-0 `} >
             <div
-                className={`relative bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-xl block w-full p-3  ${state == 'En verficación' && 'bg-gray-100'}   ${state == 'Transfiriendo' && 'bg-yellow-300'}   ${state == 'Exitoso' && 'bg-green-400'} ${state == 'Rechazado' && 'bg-red-400'}`}
+                className={`relative bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-xl block w-full p-3 cursor-pointer  ${state == 'En verficación' && 'bg-gray-100'}  ${state == 'Verificado' && 'bg-blue-300'} ${state == 'Transfiriendo' && 'bg-yellow-300'}   ${state == 'Exitoso' && 'bg-green-300'} ${state == 'Rechazado' && 'bg-red-300'}`}
                 onClick={handlerSelect}>
                 {state} <span className={isSelect3 ? 'absolute right-5 rotate-[270deg]' : 'absolute right-5 rotate-90'}>{'>'}</span>
             </div>
@@ -31,7 +32,7 @@ export default function isSelect3({ arr, name, click, defaul, uuid }) {
                 className={isSelect3 ? `py-3  absolute left-0 top-[38px] h-[100px] overflow-y-auto bg-gray-50 outline outline-1 outline-gray-300 text-gray-900 text-[14px] rounded-b-xl focus:ring-blue-500 focus:outline-blue-500 w-full  z-30` : 'hidden'}            // className={`bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 
             >
                 {
-                    arr.map((i, index) => <li key={i} className={`py-2 px-3    ${index % 2 === 0 ? '' : ''}`} onClick={() => handlerUserState(name, i)}>{i}</li>)
+                    arr.map((i, index) => <li key={i} className={`py-2 px-3 cursor-pointer   ${index % 2 === 0 ? '' : ''}`} onClick={() => handlerUserState(name, i)}>{i}</li>)
                 }
             </ul>
         </div>

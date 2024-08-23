@@ -28,14 +28,14 @@ export default function Home() {
     function onChangeFilter(e) {
         setFilter(e.target.value)
     }
-    function sortArray(x, y) {
-        if (x['translation']['spa']['common'].toLowerCase() < y['translation']['spa']['common'].toLowerCase()) { return -1 }
-        if (x['translation']['spa']['common'].toLowerCase() > y['translation']['spa']['common'].toLowerCase()) { return 1 }
-        return 0
-    }
-    function onChangeHandler(e, i) {
-        setState({ ...state, [i.cca3]: { ...state[i.cca3], [e.target.name]: e.target.value } })
-    }
+    // function sortArray(x, y) {
+    //     if (x['translation']['spa']['common'].toLowerCase() < y['translation']['spa']['common'].toLowerCase()) { return -1 }
+    //     if (x['translation']['spa']['common'].toLowerCase() > y['translation']['spa']['common'].toLowerCase()) { return 1 }
+    //     return 0
+    // }
+    // function onChangeHandler(e, i) {
+    //     setState({ ...state, [i.cca3]: { ...state[i.cca3], [e.target.name]: e.target.value } })
+    // }
     function save(i) {
         setDestinatario({ ...i, ...state, operacion: pathname })
         router.push('/Confirm/')
@@ -92,8 +92,8 @@ export default function Home() {
                     <button className='w-[200px] flex justify-center items-center h-[40px] text-white text-[14px] font-medium bg-[#32CD32] border border-gray-200 rounded-[10px] px-5 cursor-pointer' onClick={redirect}>Nuevo destinatario</button>
                 </div>
                 <br />
-                <table className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
-                    <thead className="text-[14px] text-gray-700 uppercase bg-white">
+                <table className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 ">
+                    <thead className="text-[14px] text-white uppercase bg-gray-800">
                         <tr>
                             <th scope="col" className="w-[50px] px-3 py-3">
                                 #

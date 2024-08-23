@@ -18,7 +18,7 @@ export default function Button({click, type, name, onChange,reference, minLength
         <input
             type={type}
             name={name}
-            className={`bg-gray-50 border border-gray-300 text-gray-900 text-[14px] text-center rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-[100%] p-3 ${styled}`}
+            className={`bg-gray-50 border border-gray-300 max-w-[378px] text-gray-900 text-[14px] shadow-2xl text-center rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-[100%] p-3 ${styled}`}
             // className="bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3
             //  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange={onChange}

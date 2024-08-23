@@ -226,7 +226,7 @@ export default function Home() {
         <input type="text" className='border-b-[1px] text-[14px] outline-none w-[400px]' onChange={onChangeFilter} placeholder='Buscar por remitente, destinatario o DNI' />
         <div className='min-w-[1900px] flex justify-start items-center my-5 '>
           <h3 className="flex pr-12 text-[14px]" htmlFor="">Estado</h3>
-          <div className="grid grid-cols-4 gap-4 w-[700px] ">
+          <div className="grid grid-cols-5 gap-4 w-[800px] ">
             {estadoCONST.map((i, index) => {
               return <Tag theme={estado == i ? 'Primary' : 'Secondary'} click={() => setEstado(estado == i ? '' : i)}>{i}</Tag>
             })}
@@ -321,7 +321,7 @@ export default function Home() {
                   </td>
                   {console.log(i)}
                   <td className="min-w-32 px-3 py-4  ">
-                    <Select arr={['En verficación', 'Transfiriendo', 'Exitoso', 'Rechazado']} name='estado' uuid={i.uuid} defaul={i.estado} click={handlerSelect} />
+                    <Select arr={estadoCONST} name='estado' uuid={i.uuid} defaul={i.estado} click={handlerSelect} />
                   </td>
                   <td className="min-w-32 px-3 py-4  ">
                     {i['remitente']}

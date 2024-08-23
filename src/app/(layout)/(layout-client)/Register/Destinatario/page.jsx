@@ -66,7 +66,8 @@ function Home() {
     }
     console.log(isSelect3)
     return (
-        <form className='w-full min-h-[80vh] space-y-6 lg:grid lg:grid-cols-2 lg:gap-5' onSubmit={save}>
+        <div className='md:pl-5'>
+        <form className='w-full min-h-[80vh] space-y-6 lg:grid lg:grid-cols-2 lg:gap-5  rounded-[5px] md:max-h-[80vh] overflow-y-auto overflow-x-hidden' onSubmit={save}>
             {modal === 'Guardando...' && <Loader> {modal} </Loader>}
             <div className='w-full border-b-[2px] border-gray-100 col-span-2'>
                 <h3 className=' pb-3 text-white  text-right'>Destinatario</h3>
@@ -114,6 +115,7 @@ function Home() {
             </>}
             {success == 'CompletePais' && <Msg>Seleccione un pais</Msg>}
         </form>
+        </div>
     )
 }
 

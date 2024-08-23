@@ -85,7 +85,7 @@ const PDFView = () => {
                                 </View>
                                 <View style={{ paddingTop: '8px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <Text style={{ fontSize: '12px', width: '50%' }}>Divisa de envio:</Text>
-                                    <Text style={{ fontSize: '12px', width: '50%' }}>{transactionDB['divisa de envio'] && transactionDB['divisa de envio']}</Text>
+                                    <Text style={{ fontSize: '12px', width: '50%' }}>{transactionDB['divisa de envio'] && (transactionDB['divisa de envio'] === 'USD'? 'USDT' :transactionDB['divisa de envio'])}</Text>
                                 </View>
                                 <View style={{ paddingTop: '8px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <Text style={{ fontSize: '12px', width: '50%' }}>Importe:</Text>
@@ -93,7 +93,7 @@ const PDFView = () => {
                                 </View>
                                 <View style={{ paddingTop: '8px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <Text style={{ fontSize: '12px', width: '50%' }}>Divisa de receptor:</Text>
-                                    <Text style={{ fontSize: '12px', width: '50%' }}>{transactionDB['divisa de receptor'] && transactionDB['divisa de receptor']}</Text>
+                                    <Text style={{ fontSize: '12px', width: '50%' }}>{transactionDB['divisa de receptor'] && (transactionDB['divisa de receptor'] === 'USD'? 'USDT' :transactionDB['divisa de receptor'])}</Text>
                                 </View>
                                 <View style={{ paddingTop: '8px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <Text style={{ fontSize: '12px', width: '50%' }}>Importe Con el cambio aplicado:</Text>
