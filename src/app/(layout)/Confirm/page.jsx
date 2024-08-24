@@ -35,7 +35,6 @@ function Home() {
             comision,
             ['divisa de receptor']: select2,
             cambio: divisas && divisas[select] && divisas[select2] && (transferencia * divisas[select2].venta / divisas[select].venta).toFixed(2),
-            estado: 'En verficación',
             ['user uuid']: user.uid,
             notificaciones: true,
 

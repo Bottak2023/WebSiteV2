@@ -13,22 +13,39 @@ export default function handler(req, res) {
     async function handlerSendEmail() {
 
 
-        await transporter.sendMail({
-            from: 'info.bottak@gmail.com',
-            to: req.body.email,
-            subject: ` Reporte de transaccion: estado: ${req.body.estado}`,
-            text: req.body.data,
-            // html: '<p></p>',
 
-            // attachments: [
-            //     {
-            //         filename: `Cotizacion_${req.body.element}.pdf`,
-            //         content: req.body.pdfBase64.split("base64,")[1],
-            //         encoding: 'base64'
-            //     }
-            // ]
-        });
-        res.json({ success: 'true' })
+
+
+
+        try {
+
+
+
+            await transporter.sendMail({
+                from: 'info.bottak@gmail.com',
+                to: req.body.email,
+                subject: ` Reporte de transaccion: estado: ${req.body.estado}`,
+                text: req.body.data,
+                // html: '<p></p>',
+
+                // attachments: [
+                //     {
+                //         filename: `Cotizacion_${req.body.element}.pdf`,
+                //         content: req.body.pdfBase64.split("base64,")[1],
+                //         encoding: 'base64'
+                //     }
+                // ]
+            });
+            res.json({ success: 'true' })
+
+
+        } catch (err) {
+            res.json({ success: 'error' })
+
+console.log(err)
+        }
+
+
     }
 
     handlerSendEmail()

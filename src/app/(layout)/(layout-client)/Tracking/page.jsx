@@ -191,7 +191,7 @@ export default function Page({ styled, name, change }) {
                                         Estado:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${filterQR.estado == 'En verficación' && 'bg-gray-100'}   ${filterQR.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${filterQR.estado == 'Exitoso' && 'bg-green-400'} ${filterQR.estado == 'Rechazado' && 'bg-red-400'}`}>{filterQR.estado}</span>
+                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${filterQR.estado == 'En verificación' && 'bg-gray-100'}   ${filterQR.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${filterQR.estado == 'Exitoso' && 'bg-green-400'} ${filterQR.estado == 'Rechazado' && 'bg-red-400'}`}>{filterQR.estado}</span>
                                     </td>
                                 </tr>
                                 <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >
@@ -319,7 +319,7 @@ export default function Page({ styled, name, change }) {
                                         Estado:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${filterQR.estado == 'En verficación' && 'bg-gray-100'}   ${filterQR.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${filterQR.estado == 'Exitoso' && 'bg-green-400'} ${filterQR.estado == 'Rechazado' && 'bg-red-400'}`}>{filterQR.estado}</span>
+                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${filterQR.estado == 'En verificación' && 'bg-gray-100'}   ${filterQR.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${filterQR.estado == 'Exitoso' && 'bg-green-400'} ${filterQR.estado == 'Rechazado' && 'bg-red-400'}`}>{filterQR.estado}</span>
                                     </td>
                                 </tr>
                                 <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >

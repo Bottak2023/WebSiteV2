@@ -24,7 +24,7 @@ export default function isSelect3({ arr, name, click, defaul, uuid }) {
     return (
         <div className={`relative w-[100%] sm:min-w-[150px] sm:max-w-[350px] bg-transparent border-[.5px] border-gray-300 text-gray-900 text-[14px] rounded-xl block  p-0 `} >
             <div
-                className={`relative bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-xl block w-full p-3 cursor-pointer  ${state == 'En verficación' && 'bg-gray-100'}  ${state == 'Verificado' && 'bg-blue-300'} ${state == 'Transfiriendo' && 'bg-yellow-300'}   ${state == 'Exitoso' && 'bg-green-300'} ${state == 'Rechazado' && 'bg-red-300'}`}
+                className={`relative bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-xl block w-full p-3 cursor-pointer  ${state == 'En verificación' && 'bg-gray-100'}  ${state == 'Verificado' && 'bg-blue-300'} ${state == 'Transfiriendo' && 'bg-yellow-300'}   ${state == 'Exitoso' && 'bg-green-300'} ${state == 'Rechazado' && 'bg-red-300'}`}
                 onClick={handlerSelect}>
                 {state} <span className={isSelect3 ? 'absolute right-5 rotate-[270deg]' : 'absolute right-5 rotate-90'}>{'>'}</span>
             </div>

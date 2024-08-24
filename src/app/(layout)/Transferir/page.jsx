@@ -55,16 +55,19 @@ function Home() {
     const handlerIsSelect5 = () => {
         setIsSelect5(!isSelect5)
     }
+
+
+
+
+
     function save(e, verif) {
         e.preventDefault()
-        
-        setModal('Verificando...')
 
-        console.log('button')
+        setModal('Verificando...')
 
         const reader = new FileReader();
         reader.onloadend = () => {
-            console.log(reader.result);
+            // console.log(reader.result);
         }
         reader.readAsDataURL(postImage);
 
@@ -73,17 +76,16 @@ function Home() {
         const fecha = getDayMonthYear(date)
         const db = {
             ...destinatario,
-            fecha,
-            date,
-            uuid,
             email: user.email,
-            ...verif
         }
+
+
+
         const callback = async (object) => {
+
+
             getSpecificDataEq(`/envios/`, 'user uuid', user.uid, setEnviosDB)
             getSpecificDataEq(`/cambios/`, 'user uuid', user.uid, setCambiosDB)
-
-
 
             const botChat = ` 
             ---DATOS REGISTRO DE REMITENTE---\n
@@ -119,65 +121,101 @@ function Home() {
               ---DATOS DE TRANSACCION BOTTAK---\n
               banco de transferencia: ${object['banco de transferencia']},\n 
               `
-            await fetch(`/api/sendEmail`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ data: botChat, estado: db.estado, email: user.email })
-            })
-            await fetch(`/api/bot`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ data: botChat, url: object.url }),
-            })
-            router.replace(`/Exitoso?uuid=${uuid}`)
+
+
+
+
+            try {
+                const response = await fetch('/api/postGoogleSheet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "op": "listar",
+                        "remitente": object['remitente'],
+                        "importe": object['importe'],
+                        "user uuid": object['user uuid'],
+                        "uuid": object.uuid,
+                        "operacion": object['operacion']=== 'Envio'? 'envios':'cambios'
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log(result.conten);
+
+
+                result.content.filter((i) => {
+                    return
+                })
+
+
+                await fetch(`/api/sendEmail`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: botChat, estado: db.estado, email: user.email })
+                })
+
+                await fetch(`/api/bot`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: botChat, url: object.url }),
+                })
+            } catch (err) {
+                console.log(err.message);
+            }
+
+
+            router.replace(`/Exitoso?uuid=${uuid}&operacion=${object['operacion'] === 'Cambio' ? 'cambios' : 'envios'}`)
             setModal('')
         }
-        destinatario.operacion === 'Cambio'
-            ? uploadStorage(`cambios/${uuid}`, postImage, db, callback)
-            : uploadStorage(`envios/${uuid}`, postImage, db, callback)
-        // writeUserData(`envios/${uuid}`, db, setUserSuccess, callback)
-    }
-
-    downloadFile(`/currencies/${userDB.cca3.toUpperCase()}`)
-
-    function validateTransaction() {
-        function callback() {
+        function callback2(object) {
+            destinatario.operacion === 'Cambio'
+                ? uploadStorage(`cambios/${uuid}`, postImage, { "remitente": object['remitente'],
+                    "importe": object['importe'],
+                    "user uuid": object['user uuid'],
+                    "uuid": object.uuid,
+                    "operacion": object['operacion']}, callback)
+                : uploadStorage(`envios/${uuid}`, postImage, { "remitente": object['remitente'],
+                    "importe": object['importe'],
+                    "user uuid": object['user uuid'],
+                    "uuid": object.uuid,
+                    "operacion": object['operacion']}, callback)
         }
-        getSpecificData2('/pagosQR', setPagosQR, callback)
+
+
+        destinatario.operacion === 'Cambio'
+            ? uploadStorage(`cambios/${uuid}`, postImage, {
+                ...db, ...verif, fecha,
+                date,
+                uuid,
+            }, callback2)
+            : uploadStorage(`envios/${uuid}`, postImage, {
+                ...db, ...verif, fecha,
+                date,
+                uuid,
+            }, callback2)
     }
+
+
     console.log(userDB)
-    // useEffect(() => {
 
 
 
-    //     if (pagosQR !== undefined && Object.values(pagosQR).length > 0) {
-    //         setModal('Validando...')
 
-    //         let arrDB = Object.values(pagosQR).filter((i) => i !== undefined && i.dominio == payDB.dominio && i.verificacion == false && i.mensaje.includes(userDB.nombre.toUpperCase()) && i.mensaje.includes((destinatario.importe * 1).toFixed(2)))
-    //         if (arrDB.length === 1) {
-    //             let db = { verificacion: true, verif_userVUID: userDB.uuid, verif_userName: userDB.nombre, verif_userDNI: userDB.dni }
-    //             function callback() {
-    //                 save({...db, estado: 'Verificado'})
-    //             }
 
-    //             writeUserData(`pagosQR/${arrDB[0].uuid}`, db, null, callback)
 
-    //         } else {
-
-                
-    //             // save({estado: 'En verificación'})
-    //         }
-    //     }
-    //     pagosQR !== undefined && Object.values(pagosQR).length > 0 && console.log(Object.values(pagosQR).filter((i) => i !== undefined && i.dominio == payDB.dominio && i.verificacion == false && i.mensaje.includes(userDB.nombre.toUpperCase()) && i.mensaje.includes((destinatario.importe * 1).toFixed(2))))
-
-    // }, [pagosQR])
     return (
         countries[userDB.cca3] !== undefined && countries[userDB.cca3].countries !== undefined
-            ? <form className='relative w-full min-h-[80vh] space-y-6 lg:grid lg:grid-cols-2 lg:gap-5 ' onSubmit={(e)=>save(e, {estado: 'En verificación'})}>
+            ? <form className='relative w-full min-h-[80vh] space-y-6 lg:grid lg:grid-cols-2 lg:gap-5 ' onSubmit={(e) => save(e, { estado: 'En verificación', verificacion: false })}>
                 {modal === 'Validando...' && <Loader> {modal} </Loader>}
                 {modal === 'Verificando...' && <Loader> Enviando a verificación... </Loader>}
 
@@ -257,28 +295,9 @@ function Home() {
 
                 </div>
 
-                {/* <div className=' space-y-5'>
-                <Label htmlFor="">Cuenta bancaria</Label>
-                <span className="block text-white text-center" >{countries && countries !== undefined && countries[userDB.cca3]['cuenta de cobro'] !== undefined && countries[userDB.cca3]['cuenta de cobro']} <br />
-                    {countries && countries !== undefined && countries[userDB.cca3]['cuenta de cobro'] !== undefined && countries[userDB.cca3]['banco de cobro']}</span>
-            </div> */}
 
 
-                {/* <div className=' space-y-5'>
-                <Label htmlFor="">Banco de transferencia</Label>
-                 <SelectBank name="nombre de banco" propHandlerIsSelect={handlerIsSelect4} propIsSelect={isSelect4} operation="envio" click={handlerBankSelect} arr={Object.values(countries[userDB.cca3].countries)} />
-            </div>
-            <div className=' space-y-5'>
-                <Label htmlFor="">Numero de cuenta transferidora</Label>
-                <Input type="text" name="cuenta transferidora" onChange={onChangeHandler} required />
-            </div> */}
-                {/* <div className=' space-y-5'>
-                <Label htmlFor="">Titular de banco de transferencia</Label>
-                <Input type="text" name="titular de banco" onChange={onChangeHandler} required />
-            </div> */}
-                {/* {countries[userDB.cca3] !== undefined && countries[userDB.cca3].countries !== undefined && <div className='flex w-full justify-around items-end col-span-2'>
-                    <Button theme='Primary' >Guardar</Button>
-                </div>} */}
+
                 {success == 'CompletePais' && <Msg>Seleccione un pais</Msg>}
             </form>
             : <ModalINFO theme={'Danger'} alert={false} button="Volver" funcion={() => router.replace('/')} close={true} >Por el momento no hay bancos disponibles para tu pais</ModalINFO>

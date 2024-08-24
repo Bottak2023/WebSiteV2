@@ -19,12 +19,14 @@ function Home() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const pathname = searchParams.get('uuid')
+    const operacion = searchParams.get('operacion')
+
 
     useEffect(() => {
         transactionDB !== undefined && QRurl === null && document.getElementById('qr') && setQRurl(document.getElementById('qr').toDataURL())
     }, [QRurl])
     useEffect(() => {
-        getSpecificData(`/envios/${pathname}`, setTransactionDB)
+        getSpecificData(`/${operacion}/${pathname}`, setTransactionDB)
     }, [])
 
     return (
@@ -161,7 +163,7 @@ function Home() {
                                         Estado:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${transactionDB.estado == 'En verficación' && 'bg-gray-100'}   ${transactionDB.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${transactionDB.estado == 'Exitoso' && 'bg-green-400'} ${transactionDB.estado == 'Rechazado' && 'bg-red-400'}`}>{transactionDB.estado}</span>
+                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${transactionDB.estado == 'En verificación' && 'bg-gray-100'}   ${transactionDB.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${transactionDB.estado == 'Exitoso' && 'bg-green-400'} ${transactionDB.estado == 'Rechazado' && 'bg-red-400'}`}>{transactionDB.estado}</span>
                                     </td>
                                 </tr>
                                 <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >
@@ -289,7 +291,7 @@ function Home() {
                                         Estado:
                                     </td>
                                     <td className="px-3 py-3 text-gray-900 ">
-                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${transactionDB.estado == 'En verficación' && 'bg-gray-100'}   ${transactionDB.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${transactionDB.estado == 'Exitoso' && 'bg-green-400'} ${transactionDB.estado == 'Rechazado' && 'bg-red-400'}`}>{transactionDB.estado}</span>
+                                    <span className={`w-full block py-1 px-2 rounded-[10px] ${transactionDB.estado == 'En verificación' && 'bg-gray-100'}   ${transactionDB.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${transactionDB.estado == 'Exitoso' && 'bg-green-400'} ${transactionDB.estado == 'Rechazado' && 'bg-red-400'}`}>{transactionDB.estado}</span>
                                     </td>
                                 </tr>
                                 <tr className="bg-white text-[14px] border-b hover:bg-gray-50 " >

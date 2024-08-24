@@ -130,7 +130,7 @@ export default function Home() {
                   </td>
                   {/* {console.log(i['estado'])} */}
                   <td className="min-w-32 px-3 py-4  ">
-                    <span className={`w-full block py-5 px-10 rounded-[10px] ${i.estado == 'En verficación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i['estado']}</span>
+                    <span className={`w-full block py-5 px-10 rounded-[10px] ${i.estado == 'En verificación' && 'bg-gray-100'}   ${i.estado == 'Transfiriendo' && 'bg-yellow-300'}   ${i.estado == 'Exitoso' && 'bg-green-400'} ${i.estado == 'Rechazado' && 'bg-red-400'}`}>{i['estado']}</span>
                   </td>
                   <td className="min-w-32 px-3 py-4  ">
                     {i['usuario']}
