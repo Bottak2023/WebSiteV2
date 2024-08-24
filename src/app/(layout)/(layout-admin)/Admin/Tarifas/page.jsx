@@ -99,7 +99,6 @@ export default function Home() {
       })
     })
     const data = await res.json()
-    console.log(data)
 
     setExchange(data)
   }
@@ -107,7 +106,6 @@ export default function Home() {
   const prev = () => {
     requestAnimationFrame(() => {
       const scrollLeft = refFirst.current.scrollLeft;
-      console.log(scrollLeft)
       const itemWidth = screen.width - 50
       refFirst.current.scrollLeft = scrollLeft - itemWidth;
     });
@@ -115,9 +113,7 @@ export default function Home() {
   const next = () => {
     requestAnimationFrame(() => {
       const scrollLeft = refFirst.current.scrollLeft;
-      console.log(scrollLeft)
       const itemWidth = screen.width - 50
-      console.log(itemWidth)
       refFirst.current.scrollLeft = scrollLeft + itemWidth;
     });
   };
@@ -278,7 +274,6 @@ export default function Home() {
 
     })
     let resDB = await res.json()
-    console.log()
     setResP2P(resDB.data)
 
   }
@@ -364,8 +359,7 @@ export default function Home() {
   function handlerInterval() {
     if (!act) {
       interval = setInterval(() => {
-        console.log('hello')
-        console.log(act)
+  
       }, 2000)
     } else {
       clearInterval(interval)
@@ -723,7 +717,6 @@ export default function Home() {
                 </td>
                 <td className={`px-3 py-4 text-gray-900 ${((time_stamp - i.time_stamp) / 60000) > 60 && 'bg-red-200'} ${((time_stamp - i.time_stamp) / 60000) < 10 && 'bg-green-200'} ${((time_stamp - i.time_stamp) / 60000) > 10 && ((time_stamp - i.time_stamp) / 60000) < 60 && 'bg-yellow-200'}`}>
                 
-                {console.log(i.code + (time_stamp - i.time_stamp) / 60000)}
                   {i.actualizacion && i.actualizacion !== undefined ? <>{i.actualizacion.split(' ')[0]} <br /> {i.actualizacion.split(' ')[1]}</> : ''}
                 </td>
                 <td className="w-32 p-4">

@@ -81,7 +81,6 @@ export default function Home() {
             })
         })
         const data = await res.json()
-        console.log(data)
 
         setExchange(data)
     }
@@ -97,8 +96,7 @@ export default function Home() {
     //     }, {})
     //     writeUserData(`divisas/`, obj,)
     // }
-    console.log(item)
-    console.log(state)
+
     useEffect(() => {
         // divisas !== undefined && getDivisas()
         // divisas !== undefined && exchange === undefined && getCurrencyExchange()

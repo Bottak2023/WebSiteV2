@@ -45,7 +45,6 @@ function closeProfileIMG() {
   const prev = () => {
     requestAnimationFrame(() => {
       const scrollLeft = refFirst.current.scrollLeft;
-      console.log(scrollLeft)
       const itemWidth = screen.width - 50
       refFirst.current.scrollLeft = scrollLeft - itemWidth;
     });
@@ -53,9 +52,7 @@ function closeProfileIMG() {
   const next = () => {
     requestAnimationFrame(() => {
       const scrollLeft = refFirst.current.scrollLeft;
-      console.log(scrollLeft)
       const itemWidth = screen.width - 50
-      console.log(itemWidth)
       refFirst.current.scrollLeft = scrollLeft + itemWidth;
     });
   };

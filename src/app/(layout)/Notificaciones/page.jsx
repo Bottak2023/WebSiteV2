@@ -20,7 +20,7 @@ export default function Home() {
     const prev = () => {
         requestAnimationFrame(() => {
             const scrollLeft = refFirst.current.scrollLeft;
-            console.log(scrollLeft)
+            
             const itemWidth = screen.width - 50
             refFirst.current.scrollLeft = scrollLeft - itemWidth;
         });
@@ -28,9 +28,9 @@ export default function Home() {
     const next = () => {
         requestAnimationFrame(() => {
             const scrollLeft = refFirst.current.scrollLeft;
-            console.log(scrollLeft)
+            
             const itemWidth = screen.width - 50
-            console.log(itemWidth)
+
             refFirst.current.scrollLeft = scrollLeft + itemWidth;
         });
     };

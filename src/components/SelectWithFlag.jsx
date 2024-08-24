@@ -59,10 +59,10 @@ export default function App({ placeholder, value, onChange, propHandlerSelect, p
           step=".01"
           onChange={handlerOnChange}
           placeholder={placeholder}
-          value={value && divisas && divisas[select] && divisas[select2] && (transferencia * divisas[select2].venta / divisas[select].venta).toFixed(2)}
+          value={value && divisas && divisas[select] && divisas[select2] && (transferencia * divisas[select2].compra / divisas[select].venta).toFixed(2)}
           defaultValue={defaultValue}
           required />
-
+{console.log()}
         <span className=" w-[15%] text-gray-100 p-3 " onClick={(e) => handlerIsSelect(e)}>{propSelect === 'USD'? 'USDT' :propSelect}</span>
         <span className='w-[auto] flex items-center rounded-[20px] '><img src={divisas && divisas[propSelect] && divisas[propSelect].flagPNG} className="w-[50px] h-[30px]" alt="" /></span>
         {/* <span className='w-[auto] flex items.center rounded-[20px] '><CurrencyFlag currency={propSelect} size="xl" /></span> */}

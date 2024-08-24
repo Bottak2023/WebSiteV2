@@ -12,8 +12,7 @@ export default function RootLayout({ children }) {
 
     const { user, userDB, setUserProfile, nav, setNav, userNav, setNavItem, setUserData, divisas, setDivisas, setCountries, setEnviosDB, setCambiosDB, setNotificaciones, setIsSelect, setIsSelect2, setIsSelect3, setIsSelect4, setIsSelect5} = useUser()
     const router = useRouter()
-    console.log(user)
-    console.log(userDB)
+  
 
     function mainHandler () {
         setIsSelect(false)

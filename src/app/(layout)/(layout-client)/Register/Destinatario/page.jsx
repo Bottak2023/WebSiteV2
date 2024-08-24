@@ -64,7 +64,6 @@ function Home() {
         }
         writeUserData(`users/${user.uid}/destinatarios/${uuid}`, { ...destinatario, uuid }, setUserSuccess, callback)
     }
-    console.log(isSelect3)
     return (
         <div className='md:pl-5'>
         <form className='w-full min-h-[80vh] space-y-6 lg:grid lg:grid-cols-2 lg:gap-5  rounded-[5px] md:max-h-[80vh] overflow-y-auto overflow-x-hidden' onSubmit={save}>

@@ -83,12 +83,10 @@ function Page() {
     e.preventDefault()
     e.stopPropagation()
     if (user == null && user == undefined) {
-      console.log('signup')
       setModal('registrate')
       return
     }
     if (user && userDB == null) {
-      console.log('registrate')
       router.push('/Register')
       return
     }

@@ -42,10 +42,8 @@ export default function Home({children}) {
       const data = await getSpecificData(`/users/${res.uid}`)
       data == null ? router.push('/Register') : router.push('/Register/Destinatario')
     }
-    console.log()
   }
 
-  console.log(user)
 
   useEffect(() => {
     // console.log(user)

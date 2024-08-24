@@ -28,7 +28,6 @@ export default function WebCamp({ takePhoto }) {
 
         const reader = new FileReader();
         reader.onloadend = () => {
-            console.log(reader.result);
             switch (e.target.name) {
                 case 'Capture1':
                     return setImage1(reader.result)

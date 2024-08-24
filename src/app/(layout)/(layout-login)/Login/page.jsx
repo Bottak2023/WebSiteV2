@@ -35,12 +35,9 @@ export default function Home() {
       setUserSuccess('Intente')
       return
     }
-    console.log(res)
 
     if (res && (userDB == null || userDB == undefined)) {
-      console.log(res)
       const data = await getSpecificData(`/users/${res.uid}`, setUserData)
-      console.log(data)
       if (data == null) {
         router.push('/Register') 
       } else {

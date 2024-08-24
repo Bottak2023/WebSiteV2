@@ -195,7 +195,6 @@ export default function Home() {
   const prev = () => {
     requestAnimationFrame(() => {
       const scrollLeft = refFirst.current.scrollLeft;
-      console.log(scrollLeft)
       const itemWidth = screen.width - 50
       refFirst.current.scrollLeft = scrollLeft - itemWidth;
     });
@@ -203,9 +202,7 @@ export default function Home() {
   const next = () => {
     requestAnimationFrame(() => {
       const scrollLeft = refFirst.current.scrollLeft;
-      console.log(scrollLeft)
       const itemWidth = screen.width - 50
-      console.log(itemWidth)
       refFirst.current.scrollLeft = scrollLeft + itemWidth;
     });
   };
@@ -319,7 +316,6 @@ export default function Home() {
                   <td className="px-3 py-4  flex  ">
                     <span className='h-full flex py-2'>{index + 1}</span>
                   </td>
-                  {console.log(i)}
                   <td className="min-w-32 px-3 py-4  ">
                     <Select arr={estadoCONST} name='estado' uuid={i.uuid} defaul={i.estado} click={handlerSelect} />
                   </td>

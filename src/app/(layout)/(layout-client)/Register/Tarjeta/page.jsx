@@ -60,7 +60,6 @@ function Home() {
         setState({ ...state, [name]: value })
     }
 
-console.log(state)
     function save(e) {
         e.preventDefault()
         writeUserData(`users/${user.uid}/tarjeta`, state, setUserSuccess, )

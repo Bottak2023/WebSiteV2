@@ -30,7 +30,6 @@ export default function Modal({ children, theme, button, funcion, alert }) {
         setModal('Guardando...')
         writeUserData(`${route}/${uuid}`, {nota: textEditor, notificaciones: true, uuid }, setUserSuccess, callback)
     }
-    console.log(cliente)
     useEffect(() => {
         getSpecificData(`/users/${pathname}`, setCliente)
     }, [pathname])

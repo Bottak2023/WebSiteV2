@@ -146,7 +146,6 @@ function Home() {
                 }
 
                 const result = await response.json();
-                console.log(result.conten);
 
 
                 result.content.filter((i) => {
@@ -170,7 +169,6 @@ function Home() {
                     body: JSON.stringify({ data: botChat, url: object.url }),
                 })
             } catch (err) {
-                console.log(err.message);
             }
 
 

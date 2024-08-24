@@ -35,7 +35,6 @@ function Home() {
     const handlerIsSelect4 = () => {
         setIsSelect4(!isSelect4)
     }
-    console.log(state)
     function save(e) {
         e.preventDefault()
         const data = { ...state, image1, image2, image3, rol: 'Cliente', uuid: user.uid, habilitado: false, bloqueado: false }
